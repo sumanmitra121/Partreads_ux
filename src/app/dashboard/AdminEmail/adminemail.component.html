@@ -1,0 +1,62 @@
+<app-adminheader></app-adminheader>
+
+<div class="page-body-wrapper">
+  <app-adminsidebar></app-adminsidebar>
+
+  <div class="main-panel">
+    <div class="content-wrapper">
+      <div class="card">
+        <div class="card-body">
+            <div class="titleSec">
+                <h2>Sent Email</h2> 
+            </div>
+            <form [formGroup]="_sentEmail" (ngSubmit)="SendEmail()">
+
+            <div class="row">
+              <div class="col-12 mb-5">
+                <mat-radio-group color="primary" formControlName="_flag">
+                  <mat-radio-button value="U">users</mat-radio-button>
+                  <mat-radio-button value="P">Publishers</mat-radio-button>
+                </mat-radio-group>
+              </div>
+               <div class="col-12">
+                 <ng-container *ngIf="f._flag.value == 'U'">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Choose an option</mat-label>
+                    <mat-select formControlName="_user_type">
+                    <mat-option value="">Select</mat-option>
+                    <mat-option *ngFor="let userType of _userType" value="{{userType._id}}">{{userType.name}}</mat-option>
+                   </mat-select>
+                 </mat-form-field>
+                 </ng-container>
+                 <ng-container *ngIf="f._flag.value == 'P'">
+                   <div class="col-12">
+                     <mat-checkbox (change)="selAll($event)" color="primary" [checked]="f._publishers.value.length == publishers.length">Select All Publishers</mat-checkbox>
+                   </div>
+                  <mat-selection-list #allSelected color="primary" formControlName="_publishers">                 
+                    <mat-list-option checkboxPosition="before" *ngFor="let pub of publishers" [value]="pub">
+                      {{pub.user_name}}
+                    </mat-list-option>
+                  </mat-selection-list>
+                  </ng-container>
+               </div>
+               <mat-divider *ngIf="f._flag.value == 'P'"></mat-divider>
+               <div class="col-12 mt-4">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Email Body</mat-label>
+                  <textarea matInput formControlName="_bodyText" placeholder="Write Something..." rows="10"></textarea>
+                </mat-form-field>
+                
+               </div>
+               <div class="col-12 mt-5"> 
+                 <input type="submit" value="Send Mail" class="finalSubmitButton" [disabled]="(f._flag.value == 'P' ? f._publishers.value.length == 0 :  f._user_type.value == '') || f._bodyText.value == ''"/>
+               </div>
+            </div>
+          </form>
+
+        </div>
+
+    </div>
+    </div>
+  </div>
+</div>

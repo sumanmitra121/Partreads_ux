@@ -1,0 +1,300 @@
+<app-adminheader></app-adminheader>
+
+
+<div class="page-body-wrapper">
+    <app-adminsidebar></app-adminsidebar>
+
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="card">
+                <div class="card-body">
+                    <div class="titleSec">
+                        <h2>Search Coupon</h2> 
+                        <button type="button" class="btn btn-primary" (click)="addCard()">Create Coupon</button>
+
+                       
+                    </div>
+                    <form #logform="ngForm" (ngSubmit)="submitForm(logform)">
+                    <div class="row">
+                        <div class="col-4">
+                            <mat-form-field appearance="outline">
+                          
+                                <mat-label>Book Name</mat-label>
+                                <mat-select name="book_name" #book_name="ngModel" ngModel >
+                                  <mat-option value="" [selected]="this.b_id==''">Select</mat-option>
+                                  <mat-option  *ngFor="let books of allBooks" [selected]="books.book_id==this.b_id" [value]="books.book_id">
+                                    {{books.book_name}} | {{books.isbn_no}}
+                                  </mat-option>
+                                </mat-select>
+
+                              </mat-form-field>       
+                              <!-- <select class="form-control" id="myselect"  name="book_name" #book_name="ngModel" ngModel >
+                                <option value="" [selected]="this.b_id==''">Select</option>
+                              
+                                <option *ngFor="let books of allBooks" [selected]="books.book_id==this.b_id" [value]="books.book_id">{{books.book_name}} | {{books.isbn_no}}</option>
+                              </select> -->
+                        </div>
+                        <div class="col-4">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Start Date</mat-label>
+                             <input matInput type="date" name="startDate" #startDate="ngModel" ngModel/>
+                            <!-- <mat-error *ngIf="startDate.errors?. && (startDate.touched || startDate.dirty)">
+                                *Please Provide Start Date 
+                              </mat-error> -->
+                          </mat-form-field>
+                          <!-- {{startDate.value}} -->
+                        </div>
+                        <div class="col-4">
+                          <mat-form-field appearance="outline">
+                            <mat-label>End Date</mat-label>
+                             <input matInput type="date" name="endDate" #endDate="ngModel" ngModel/>
+                            <!-- <mat-error *ngIf="endDate.errors?.required && (endDate.touched || endDate.dirty)">
+                                *Please Provide End Date
+                              </mat-error> -->
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-6 mt-3 btnSubmitSec">
+                            <input type="submit" value='Search' class="btn btn-info"/>
+                        </div>
+                         </div>
+                    </form>
+
+                </div>
+
+            </div>
+            <div id="cover-spin" *ngIf="loader"></div>
+            <!-- <div class="card mt-5" id="generateCouponCard">
+              <div class="card-body">
+                 <div class="titleSec">
+                   <h2>Generate Coupon Code</h2>
+                   <a (click)="showHide('A')" class="fs-3 float-right"><i class="fa fa-times  text-muted" aria-hidden="true"></i></a>
+                 </div>
+                <form #LogForm="ngForm" (ngSubmit)="submit(LogForm)">
+               <div class="row">
+                 <div class="col-6">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Book Name</mat-label>
+                    <mat-select name="bookname" #bookname="ngModel" ngModel required>
+                      <mat-option>Select</mat-option>
+                      <mat-option *ngFor="let books of ActivelBooks" [value]="books.book_id">
+                        {{books.book_name}} | {{books.isbn_no}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="bookname.errors?.required && (bookname.touched || bookname.dirty)" >
+                      *Please Provide Book Name
+                    </mat-error>
+                  </mat-form-field>
+                 </div>
+                 <div class="col-6">
+                  <mat-form-field appearance="outline">
+                    <mat-label>No of Coupon</mat-label>
+                    <input matInput  type="number" name="no_of_coupon" #no_of_coupon="ngModel" ngModel required>
+                    <mat-error *ngIf="no_of_coupon.errors?.required && (no_of_coupon.touched || no_of_coupon.dirty)" >
+                      *Please Provide No Of Coupon
+                    </mat-error>
+                  </mat-form-field>
+                
+                 </div>
+               </div>
+               <div class="row mt-4">
+                 <div class="col-6">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Coupon Start Date</mat-label>
+                    <input type="date" matInput name="startDate" #startDate="ngModel" ngModel required [min]="getToday()"/>
+                    <mat-error *ngIf="startDate.errors?.required && (startDate.touched || startDate.dirty)" >
+                      *Please Provide Coupon Start Date
+                    </mat-error>
+                </mat-form-field>
+                 </div>
+                 <div class="col-6">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Coupon End Date</mat-label>
+                    <input type="date" matInput name="endDate" #endDate="ngModel" ngModel required [min]="getToday()"/>
+                    <mat-error *ngIf="endDate.errors?.required && (endDate.touched || endDate.dirty)" >
+                      *Please Provide Coupon End Date
+                    </mat-error>
+                </mat-form-field>
+
+                 </div>
+               </div>
+               <div class="row mt-4">
+                 <div class="col-6">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Book Start Date</mat-label>
+                    <input type="date" matInput name="bookstartDate" #bookstartDate="ngModel" ngModel required [min]="getToday()"/>
+                    <mat-error *ngIf="bookstartDate.errors?.required && (bookstartDate.touched || bookstartDate.dirty)" >
+                      *Please Provide Book Start Date
+                    </mat-error>
+                </mat-form-field>
+                 </div>
+                 <div class="col-6">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Book End Date</mat-label>
+                    <input type="date" matInput name="bookendDate" #bookendDate="ngModel" ngModel required [min]="getToday()"/>
+                    <mat-error *ngIf="bookendDate.errors?.required && (bookendDate.touched || bookendDate.dirty)" >
+                      *Please Provide Book End Date
+                    </mat-error>
+                </mat-form-field>
+                 </div>
+              
+               </div>
+               <div class="row">
+                <div class="col-6 btnSubmitSec">
+                  <input type="submit" class="btn btn-info" value="Generate" [disabled]="LogForm.invalid"/>
+                  <input type="reset" class="btn btn-info" value="RESET" id="Reset" hidden (click)="LogForm.resetForm()"/>
+                </div>
+               </div>
+              </form>
+              </div>
+          </div> -->
+            <div class="card mt-5" id="showTable">
+                <div class="card-body">
+                  <div class="titleSec">
+                    
+                    <h2>Coupon Details</h2>
+                    <a (click)="showHide('T')" class="fs-3 float-right"><i class="fa fa-times  text-muted" aria-hidden="true"></i></a>
+                  </div>
+
+                      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                      
+                        <ng-container matColumnDef="No">
+                          <th mat-header-cell *matHeaderCellDef> No. </th>
+                          <td mat-cell *matCellDef="let element;let i=index" >{{i+1}}</td>
+                        </ng-container>
+                      
+
+                        <ng-container matColumnDef="name">
+                          <th mat-header-cell *matHeaderCellDef> Book </th>
+                          <td mat-cell *matCellDef="let element">
+                            <p *ngIf="element.book_details!=null">{{element.book_details.book_name}}</p>
+                            <p *ngIf="element.book_details==null"> - </p>
+
+                          </td>
+                        </ng-container>
+                     
+
+                        <ng-container matColumnDef="isbn">
+                          <th mat-header-cell *matHeaderCellDef> ISBN </th>
+                          <td mat-cell *matCellDef="let element">
+                            <p *ngIf="element.book_details!=null">{{element.book_details.isbn_no}}</p> 
+                            <p *ngIf="element.book_details==null"> - </p>
+                          </td>
+                        </ng-container>
+
+                            <!-- <ng-container matColumnDef="coupon_code">
+                                <th mat-header-cell *matHeaderCellDef> Coupon Code </th>
+                                <td mat-cell *matCellDef="let element">{{element.coupon_code}}</td>
+                              </ng-container> -->
+
+                        <ng-container matColumnDef="startDate">
+                            <th mat-header-cell *matHeaderCellDef> Coupon Date </th>
+                            <td mat-cell *matCellDef="let element">
+                              {{element.coupon_from_date | date:'dd/MM/YYYY'}} - {{element.coupon_to_date | date:'dd/MM/YYYY'}}</td>
+                          </ng-container>
+
+
+                        <!-- <ng-container matColumnDef="endDate">
+                            <th mat-header-cell *matHeaderCellDef>Coupon End Date </th>
+                            <td mat-cell *matCellDef="let element">{{element.coupon_to_date}}</td>
+                          </ng-container> -->
+
+                        <ng-container matColumnDef="bookstartDate">
+                          <th mat-header-cell *matHeaderCellDef>Book Date </th>
+                          <td mat-cell *matCellDef="let element">{{element.book_from_date | date:'dd/MM/YYYY'}} - {{element.book_to_date | date:'dd/MM/YYYY'}}</td>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="generated date">
+                          <th mat-header-cell *matHeaderCellDef>Created At</th>
+                          <td mat-cell *matCellDef="let element">
+                            <a (click)="downloadPdf()">{{element.created_at | date:'dd/MM/YYYY'}}</a>
+                          </td>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="total coupon">
+                          <th mat-header-cell *matHeaderCellDef>Total coupon</th>
+                          <td mat-cell *matCellDef="let element">
+                            <a (click)="downloadPdf()">{{element.total_coupon}}</a>
+                          </td>
+                        </ng-container>
+
+  
+                        <ng-container matColumnDef="Action">
+                        <th mat-header-cell *matHeaderCellDef>Coupons </th>
+                        <td mat-cell *matCellDef="let element">
+                          <a *ngIf="element.book_id!=''" (click)="download(element.book_details.author_name,element.book_details.book_name,element.book_details.isbn_no,element.book_details.book_id,element.coupon_from_date,element.coupon_to_date)"><i title="dowload as pdf" class="fa fa-download" aria-hidden="true"></i></a>
+                          <p *ngIf="element.book_id==''">{{element.coupon_code}}</p>
+                        </td>
+                      </ng-container>
+
+                      <!-- <ng-container matColumnDef="CouponList" [hidden]="this.b_id==''">
+                        <th mat-header-cell *matHeaderCellDef>Coupon Code </th>
+                        <td mat-cell *matCellDef="let element">
+                          {{element.coupon_code}}
+                        </td>
+                      </ng-container> -->
+
+                      
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      
+                 
+                        <tr class="mat-row" *matNoDataRow>
+                          <td class="mat-cell" colspan="4">No data matching </td>
+                        </tr>
+                      </table>
+                      <div id="BoarddivToPrint_1">  
+                        <table id="tables" >
+                          <!-- <thead>
+                            <tr class="text-center">
+                              <img src="/assets/adminassets/images/logoAdmin.png">
+                            </tr>
+                            <tr class="text-center">
+                              <h4 class="text-center">{{book_name}}</h4>
+                            </tr>
+                            <tr class="text-center">
+                              <h5 class="text-center">by {{auth_name}}</h5>
+                            </tr>
+                            <tr class="text-center">
+                              <h5 class="text-center">{{isbn}}</h5>
+                            </tr>
+                          </thead> -->
+                          <thead>
+                           
+                            <tr>
+                              <th>Sl No.</th>
+                              <th>Coupon Code</th>
+                              <th>Coupon Date</th>
+                              <th>Book Date</th>
+                              <th>Created At</th>
+                            </tr>
+                          </thead>
+                          <tbody *ngFor="let coupons of allcoupons;let i=index">
+                            <tr>
+                              <td>{{i+1}}</td>
+                              <td>{{coupons.coupon_code}}</td>
+                              <td>{{coupons.coupon_from_date | date:'dd/MM/YYYY'}} - {{coupons.coupon_to_date | date:'dd/MM/YYYY'}}</td>
+                              <td>{{coupons.book_from_date | date:'dd/MM/YYYY'}} - {{coupons.book_to_date | date:'dd/MM/YYYY'}}</td>
+                              <td>{{coupons.created_at | date:'dd/MM/YYYY'}}</td>
+
+                            </tr>
+                          </tbody>
+                        </table>
+             
+                     
+                     
+                      </div>
+                      <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator> -->
+
+                      <div class="row mt-3">
+                        <div class="col-12  btnSubmitSec text-center">
+                            <!-- <button class="btn btn-info pdfButton" (click)="downloadPdf()" [disabled]="base_dt.length == 0">PDF</button> -->
+                        </div>
+                      </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>

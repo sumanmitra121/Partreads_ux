@@ -1,0 +1,7 @@
+{
+    "/api/*":{
+        "target":"https://partreads.com/testlrvlaws/*",
+        "secure":false,
+        "loglevel":"debug"
+    }
+}
