@@ -113,7 +113,6 @@
 									<option [hidden]="!opshow" *ngFor="let cat1 of category1">{{cat1}}</option>
 								 </select>-->
 									<angular2-multiselect [data]="dropdownList_subcategory" 
-						
 									[(ngModel)]="subcategory_selectedItems" 
 									[settings]="subcategory_dropdownSettings" 
 									(onSelect)="onsubcateSelect($event)" 
@@ -122,10 +121,8 @@
 									(onDeSelectAll)="onDeSelectAllsubcate($event)"
 									(onOpen)="onOpen($event)"
 									(onClose)="onClosesubcate($event)"
-		
 									formControlName="subcat_name"
 									required
-							
 									></angular2-multiselect>
 									
 									<mat-hint align="start" class="instructionLabel" *ngIf="subcategory_selectedItems.length <= 3 && subcategory_selectedItems.length>=0">(Maximum 3 allowed)</mat-hint>
@@ -148,7 +145,7 @@
 							 <div class="col-sm-6  float-left">
 								<mat-form-field appearance="outline">
 									<mat-label>ISBN</mat-label>
-									<input matInput type="text" id="isbnNo"  #isbn formControlName="isbn_no" (keyup)="addHyp($event)" (keypress)="check_pattern($event)" required >
+									<input maxlength="17" minlength="17" matInput type="text" id="isbnNo"  #isbn formControlName="isbn_no" (keyup)="addHyp($event)" (keypress)="check_pattern($event)" required >
 								
 									<mat-hint align="start" [hidden]="isbn_check" class="instructionLabel">(Ex. 978-3-16-148410-0)</mat-hint>
 
@@ -213,7 +210,7 @@
 							<div class="col-sm-6"></div>
 							<div class="col-sm-6">
 							  <!-- <button class="btn btn-warning-outline" matStepperPrevious>Back</button> -->
-						   	<button  class="finalSubmitButton  my-auto float-right"  [disabled]="isbn_check || (subcategory_selectedItems.length > 3 && subcategory_selectedItems.length!=0)"  matStepperNext>Next</button>
+						   	<button  class="finalSubmitButton  my-auto float-right"  [disabled]="isbn_check || (subcategory_selectedItems.length > 3 && subcategory_selectedItems.length!=0) || (f.isbn_no.value.length != 17)"  matStepperNext>Next</button>
 							</div>
 				  
 						  <div class="col-sm-6">

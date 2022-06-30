@@ -1,13 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-//import { AnyNaptrRecord } from 'dns';
 import { CookieService } from 'ngx-cookie-service';
-import { CatserveService } from 'src/app/catserve.service';
 import { PublishercategoryshowService } from 'src/app/publishercategoryshow.service';
 import { PublishersubcategoryshowService } from 'src/app/publishersubcategoryshow.service';
-import { SubcatshowService } from 'src/app/subcatshow.service';
-import { CatShowService } from '../../dashboard/cat-show.service';
 import { pubsubCat } from '..//../pubsubcat';
 import { Book } from '..//..//book';
 import { BookuploadService } from 'src/app/bookupload.service';
@@ -17,7 +12,7 @@ import { trigger, style, animate, transition } from '@angular/animations';
 import { Dimensions, ImageCroppedEvent, ImageTransform } from 'ngx-image-cropper';
 import * as $ from 'jquery';
 import { PubsiderbarinfoService } from 'src/app/pubsiderbarinfo.service';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import { ToastrManager } from 'ng6-toastr-notifications';
 
@@ -80,8 +75,6 @@ export class EbookuploadComponent implements OnInit {
   cat =[];
   subcate =[];
   constructor(private toaster:ToastrManager,private _formBuilder: FormBuilder,private split: SplitbookService, private router: Router, private cookieService: CookieService, private showcat: PublishercategoryshowService, private showsubcat: PublishersubcategoryshowService, private upld: BookuploadService,private pubinfo: PubsiderbarinfoService) {
-
-  
   }
   nm_img:any;
   userData: any = [];
@@ -220,7 +213,7 @@ export class EbookuploadComponent implements OnInit {
   
     this.category_subcategory=this._formBuilder.group({
       pub_name: [this.pub_name, Validators.required],
-      isbn_no:['',Validators.required],
+      isbn_no:['',[Validators.required,Validators.minLength(17),Validators.maxLength(17)]],
       cat_name:['',Validators.required],
       subcat_name:['',Validators.required],
       bk_name:['',Validators.required],
@@ -271,134 +264,43 @@ export class EbookuploadComponent implements OnInit {
             };
    
     })
-
-  //  console.log(this.dropdownList);
-    // this.select=document.getElementsByClassName('chosen-select');
-    // this.select.select();
     this.mdal = document.getElementById('myModal');
     this.mdal.style.display = 'none';
     tools();
-    // this.checkbox_el = document.getElementById('check');
-    // this.checkbox_el.checked = true;
- 
     localStorage.setItem('address','/publisher/ebookupload');
      this.keyword='name';   
-
-// For subCategory multiselect dropdown///
-
-// this.showsubcat.getData(this.pubcat).subscribe(data => {
-//   console.log('Success!', data);
-//  this.userData1 = data;
-//  for (let i = 0; i < this.userData1.message.length; i++) {
-//   this.category1[i]={"id":this.userData1.message[i]._id,"itemName":this.userData1.message[i].name};
-//  }
-//  this.dropdownList_subcategory=this.category1;
- // Multiselect Dropdown
-//  this.subcategory_dropdownSettings = { 
-//   singleSelection: false, 
-//   text:"Select Sub-Category*",
-//   selectAllText:'Select All',
-//   unSelectAllText:'UnSelect All',
-//   enableSearchFilter: true,
-//   showCheckbox:true,
-
-//   limitSelection:3
-//   };
-// })
   }
-
-
-//   fetchMore(event: any) {
-//     if (event.end === this.dropdownList_subcategory.length - 1) {
-//         this.loading = true;
-//         this.appService.getChunkData(this.itemList.length, this.bufferSize).then(chunk => {
-//             this.itemList = this.itemList.concat(chunk);
-//             this.loading = false;
-//         }, () => this.loading = false);
-//     }
-// }
 
   get f() { return this.category_subcategory.controls; }
+  get g(){return this.firstFormGroup.controls;}
+  get s(){return this.secondFormGroup.controls;}
+  get a(){return this.lastFormGroup.controls;}
 
   ///For category multiselect/////
-  onOpen(item:any){ 
-  //   this.dropdownList_subcategory.length=0;
-  //   this.dropdownList_subcategory=[];
-  
-  //   this.showsubcat.getSubCategory(this.selectedItems).subscribe(data => {
-  // this.category1.length=0;
-  // this.userData1.length=0;
-  // this.userData1 = data;
-  // for (let i = 0; i < this.userData1.message.length; i++) {
-  // this.category1[i]={"id":this.userData1.message[i]._id,"itemName":this.userData1.message[i].name,"category_name":this.userData1.message[i].category_name};
-  // }
-  // this.dropdownList_subcategory=this.category1;
-  // console.log(this.dropdownList_subcategory);
-  // })
-// console.log(this.dropdownList_subcategory)
-  }
-
+  onOpen(item:any){ }
   onClose(item:any){
-    // console.log(item);    
-    // console.log("Colse");
   this.loader=false;
     this.dropdownList_subcategory.length=0;
-this.dropdownList_subcategory=[];
-
-this.showsubcat.getSubCategory(this.selectedItems).subscribe(data => {
-this.category1.length=0;
-this.userData1.length=0;
-this.userData1 = data;
-for (let i = 0; i < this.userData1.message.length; i++) {
-this.category1[i]={"id":this.userData1.message[i]._id,"itemName":this.userData1.message[i].name,"category_name":this.userData1.message[i].category_name};
-}
-this.dropdownList_subcategory=this.category1;
-console.log(this.dropdownList_subcategory);
-this.loader=true;
-},error=>{
-  this.loader=true;
-})
+    this.dropdownList_subcategory=[];
+    this.showsubcat.getSubCategory(this.selectedItems).subscribe(data => {
+    this.category1.length=0;
+    this.userData1.length=0;
+    this.userData1 = data;
+    for (let i = 0; i < this.userData1.message.length; i++) {
+    this.category1[i]={"id":this.userData1.message[i]._id,"itemName":this.userData1.message[i].name,"category_name":this.userData1.message[i].category_name};
+    }
+    this.dropdownList_subcategory=this.category1;
+    this.loader=true;
+    },error=>{
+      this.loader=true;
+    })
   }
 // For Multiselect dropdown
-onItemSelect(item:any){
-  // console.log("Item Select" +JSON.stringify(this.selectedItems)+" " +this.dropdownList_subcategory);
-
-
-// this.showsubcat.getSubCategory(this.selectedItems).subscribe(data => {
-//   this.dropdownList_subcategory.length=0;
-//   this.category1.length=0;
-//   this.userData1.length=0;
-//  this.userData1 = data;
-//  for (let i = 0; i < this.userData1.message.length; i++) {
-//   this.category1[i]={"id":this.userData1.message[i]._id,"itemName":this.userData1.message[i].name,"category_name":this.userData1.message[i].category_name};
-//  }
-//  this.dropdownList_subcategory=this.category1;
-// console.log(this.dropdownList_subcategory);
-
-// })
-
-
-
-}
+onItemSelect(item:any){}
 OnItemDeSelect(item:any){
-  // console.log("Item De-Select" +JSON.stringify(this.selectedItems)+" " +this.dropdownList_subcategory);
-  // For subCategory multiselect dropdown///
-
-// this.showsubcat.getSubCategory(this.selectedItems).subscribe(data => {
-//   this.category1.length=0;
-//   this.userData1.length=0;
-//   console.log('Success!', data);
-//  this.userData1 = data;
-//  for (let i = 0; i < this.userData1.message.length; i++) {
-//   this.category1[i]={"id":this.userData1.message[i]._id,"itemName":this.userData1.message[i].name,"category_name":this.userData1.message[i].category_name};
-//  }
-//  this.dropdownList_subcategory=this.category1;
-// })
 this.loader=false;
-
 this.dropdownList_subcategory.length=0;
 this.dropdownList_subcategory=[];
-
 this.showsubcat.getSubCategory(this.selectedItems).subscribe(data => {
 this.category1.length=0;
 this.userData1.length=0;
@@ -407,7 +309,6 @@ for (let i = 0; i < this.userData1.message.length; i++) {
 this.category1[i]={"id":this.userData1.message[i]._id,"itemName":this.userData1.message[i].name,"category_name":this.userData1.message[i].category_name};
 }
 this.dropdownList_subcategory=this.category1;
-console.log(this.dropdownList_subcategory);
 this.loader=true;
 
 },error=>{
@@ -658,7 +559,8 @@ onClosesubcate(item:any){}
     this.router.navigate(['/publisher/logpub']);
   }
   onChange_book(event: any) {
-
+   console.log(event.target.files.length);
+    if(event.target.files.length > 0){
     this.file_book = event.target.files[0];
     this.t = event.target.files[0].name;
     var ext = event.target.files[0].name.split('.').pop();
@@ -675,6 +577,11 @@ onClosesubcate(item:any){}
       this.t = "";
       this.toaster.errorToastr(this.modal_msg,'',{position:"top-center",animate:"slideFromTop",maxShown:"1"});
     }
+  }
+  else{
+    console.log("Please Choose a file");
+    
+  }
   }
   preventNonNumericalInput(e: any) {
     e = e || window.event;
@@ -731,6 +638,7 @@ onClosesubcate(item:any){}
       this.b1.book_name = v4;
       this.upld.upload(this.b,v12,this.selectedItems,this.subcategory_selectedItems,full_book_price,pub_year,edition,this.other_contents,d_charge,mrp,offerprice).subscribe(data => {
         console.log(data);
+        debugger;
         this.bookdata = JSON.parse(data);
         console.log("Totalpage:" +this.bookdata.totalpage);
         var checkpgcount = 50;
@@ -740,12 +648,18 @@ onClosesubcate(item:any){}
         this.pagecounter=this.bookdata.pagecounter;
         pagecountstart=this.bookdata.pagecountstart;
         random_pages=this.bookdata.random_pages;
-        
+        console.log(this.pages);
+        debugger;
+
         if (this.bookdata.totalpage > checkpgcount) {
+        debugger;
+
           this.startpage = 1;
           this.endpage = 50;
           this.splitbookupload(this.bookdata.mainbook_url, this.bookdata.id, this.bookdata.book_id, this.bookdata.contents_from, this.bookdata.contents_to, this.bookdata.random_from, this.bookdata.random_to, this.bookdata.price, this.bookdata.user_name, this.bookdata.uploaded_page = this.pages, this.startpage, this.endpage,pagecountstart,random_pages,this.pagecounter);
         } else {
+        debugger;
+  
           var startpage = 1;
           this.endpage = this.bookdata.totalpage;
           console.log('single time');
@@ -770,11 +684,7 @@ onClosesubcate(item:any){}
 
 
   splitbookupload(mainbook_url: any, id: any, book_id: any, contents_from: any, contents_to: any, random_from: any, random_to: any, price: any, user_name: any, uploaded_page: any, startpage: any, endpage: any,pagecountstart:any,random_pages:any,page_counter:any) {
-    console.log("at start " + this.startpage);
-    console.log("URL "+mainbook_url);
-    console.log("at end " + this.endpage);
-    console.log("Page_counter "+page_counter);
-    console.log(pagecountstart,random_pages);
+    debugger;
     this.split.upload_book(mainbook_url, id, book_id, contents_from, contents_to, random_from, random_to, price, user_name, uploaded_page, this.startpage, this.endpage,pagecountstart,random_pages,page_counter).subscribe(data11 => {
       console.log(data11);
       this.temp = JSON.parse(data11);
@@ -806,22 +716,9 @@ onClosesubcate(item:any){}
           this.progress_show=false;
           this.router.navigate(['/publisher/book-list']);
         }
-        // this.counter++;
-        // this.pgbar = ((this.counter / this.counter_temp) * 100);
-        // console.log(this.temp.counting)
-        // this.pgbar = Math.round(this.temp.counting);
-        // console.log(this.pgbar);
-        // this.pgbstring = this.pgbar.toString() + "%" + " Complete";
-        // console.log(this.pgbstring);
         document.getElementById("myBar")?.style.width != this.pgbar + "%";
         document.getElementById("myBar")?.innerHTML != this.pgbar + "%"
-        //document.getElementById("myBar")?.style.width!=this.counter+'%';
         console.log(this.pgbar);
-        // if (this.counter == this.counter_temp) {
-        //   localStorage.setItem('uploader', '1');
-        //   this.router.navigate(['/publisher/book-list']);
-        // }
-
       }
       else {
         // console.log("Failure");
@@ -1033,7 +930,7 @@ close_auto1() {
 
  //For Preview Modal///
  previewValues(v1: any, v2: any, v3: any, v4: string, v5: any, v6: any, v7: any, v8: any, v9: any, v10: any, v11: any, v12: any, v13: any,full_book_price:any,pub_year:any,edition:any,d_charge:any,mrp:any,offerprice:any){
-  console.log(this.other_contents);
+  
     for(let i=0;i<this.other_contents.length;i++){
       if(this.other_contents.length==1 && this.other_contents[i].title=='' && this.other_contents[i].description=='' && this.other_contents[i].actual_page=='' && this.other_contents[i].pdf_page==''){
         $('#showMoreDetails').hide();
@@ -1065,6 +962,13 @@ close_auto1() {
       this.upload_message="Maximum Limit Exceed in Sub-Category";
     }
     else {
+      if(this.checkContentRandomPages(this.g.r_from.value,this.g.c_from.value,this.g.c_to.value,"PP")){
+        this.upload_message = "*Preview Page must be greater than Contents Page No. From and Contents Page No. To";
+     }
+     else if(this.checkContentRandomPages(this.g.r_to.value,this.g.c_from.value,this.g.c_to.value,"PC")){
+       this.upload_message = "*Page Count must be greater than Contents Page No. From and Contents Page No. To";
+     }
+     else{
       this.preview_modal=document.getElementById('preview');
       this.preview_modal.click();
       this.cate_gories.length=0;
@@ -1075,34 +979,8 @@ close_auto1() {
       for(let i=0;i<this.subcategory_selectedItems.length;i++){
         this.subcate_gories[i]=this.subcategory_selectedItems[i];
       }
+     }
      
-      // var str="";
-      // for(let i=0;i<this.cate_gories.length;i++){
-      //   if(i+1>this.cate_gories.length){
-      //        str=str+this.cate_gories[i].itemName +'.'
-      //   }
-      //   else{
-      //        str=str+this.cate_gories[i].itemName +','
-      //   }
-      // }
-      //  console.log(str);
-       
-      
-        // $('#pub_name').val(v1);
-        // $('#isbn').val(v7);
-        // $('#book_name').val(v4);
-        // $('#Auth_name').val(v5);
-        // $('#Pub_Date').val(pub_year);
-        // $('#book_edition').val(edition);
-        // $('#content_from').val(v10);
-        // $('#content_to').val(v11);
-        // $('#random_pages').val(v12);
-        // $('#page_count_start').val(v13);
-        // $('#per_page').val(v6);
-        // $('#full_book').val(full_book_price);
-        // $('#About_author').val(v8);
-        // $('#About_book').val(v9);
-
     }
  }
 
@@ -1131,10 +1009,6 @@ close_auto1() {
 
   //For checking the pattern of ISBN NO
   check_pattern(v:any){
-    // this.isbnPattern=v.target.value
-    // if(this.isbnPattern.length==3)
-    // this.isbnPattern+='-'
-    console.log(v.target.value.length)
     if ((/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/.test(v.target.value)) || (v.target.value=='')||v.target.value.length<17) {
       this.isbn_check=false;
      }
@@ -1167,11 +1041,25 @@ addHyp(e:any){
   this.isbnPattern=e.target.value
   console.log(e.target.value)
   if(e.target.value!=''){
-  if(this.isbnPattern.length==3||this.isbnPattern.length==5||this.isbnPattern.length==8||this.isbnPattern.length==15)
-  this.isbnPattern+='-'
-  this.isbnEl=document.getElementById('isbnNo');
-  this.isbnEl.value=this.isbnPattern
+    if(this.isbnPattern.length==3||this.isbnPattern.length==5||this.isbnPattern.length==8||this.isbnPattern.length==15)
+    this.category_subcategory.patchValue({
+      isbn_no: e.target.value+'-',
+    });
   }
+}
+checkContentRandomPages(str:any,_c_from:any,_c_to:any,_flag:any):boolean{
+  if(_flag  == 'PP'){
+    const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    const c_from = str.split(specialChars);
+    const found = c_from.find((e: string) =>{
+      return e <= _c_from || e <= _c_to 
+    })
+    return found == undefined ? false : true;
+  }
+  else{
+    return str <= _c_to || str <= _c_from ? true : false ;
+  }
+  
 }
 }
 
