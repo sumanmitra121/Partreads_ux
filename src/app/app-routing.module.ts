@@ -82,6 +82,7 @@ import { TermsComponent } from './terms/terms.component';
 import { UnSubscribeComponent } from './user-profile/un-subscribe/un-subscribe.component';
 import { adminemailComponent } from './dashboard/AdminEmail/adminemail.component';
 import { NotificationsComponent } from './user-profile/notifications/notifications.component';
+import { EventHandledGuard } from './Utility/event-handled.guard';
 
 
 const routes: Routes = [
@@ -257,7 +258,8 @@ const routes: Routes = [
   {
     path: 'publisher/ebookupload',
     canActivate: [PublisherAuthGuard,UserloginauthGuard],
-    component: EbookuploadComponent
+    component: EbookuploadComponent,
+    canDeactivate:[EventHandledGuard]
   },
   {
     path: 'publisher/notification',

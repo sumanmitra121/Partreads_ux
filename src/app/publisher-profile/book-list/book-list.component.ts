@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from 'src/app/user-profile/alert-dialog/alert-dialog.component';
 import { map } from 'rxjs/operators';
 import { PDFDocument } from 'pdf-lib';
+import { UtilityTService } from 'src/app/Utility/utility-t.service';
 declare const showprofile: any;
 @Component({
   selector: 'app-book-list',
@@ -40,7 +41,7 @@ export class BookListComponent implements OnInit {
   pdf_loader:boolean = false;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  constructor(public dialog: MatDialog,private toastr:ToastrManager,private booklistshow: BooklistService, private actv: ActivateService, private router: Router, private cookieService: CookieService) { }
+  constructor(public utilyT:UtilityTService,public dialog: MatDialog,private toastr:ToastrManager,private booklistshow: BooklistService, private actv: ActivateService, private router: Router, private cookieService: CookieService) { }
   p: any;
   book_name: any;
   category: any = [];
@@ -63,7 +64,9 @@ export class BookListComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.category);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.loader=false;
+    this.loader = this.dataSource.data.length > 0 ? false: true;
+    console.log(this.dataSource.data.length);
+    
  }
   ngOnInit(): void {
       this.show_it();
@@ -104,11 +107,7 @@ export class BookListComponent implements OnInit {
     this.p = new pubid(localStorage.getItem('pub-id'));
 
     this.booklistshow.getBooks(this.p).pipe(map(x=>JSON.parse(x)),map(x=> x.message)).subscribe(data => {
-     this.loader=false;
-      // this.category =data;
-      // console.log(this.category);
       this.getPageCount(data);
-      // this.inddatasource();
     },(errorMessage) => {  
      
       console.log("Error Status:" + errorMessage)
@@ -145,31 +144,31 @@ export class BookListComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  onpage(){
-  //  this.loader=false;
-  }
+  onpage(){}
   edit_bk(i:any,v1:any,flag:any){
     this.router.navigate(['publisher/viewDetails',i,v1,flag])
   }
-  deleteBook(_b_id:any,_pub_id:any,index:any){
+  deleteBook(_b_id:any,_pub_id:any,uploadad_page_count:any,index:any){
+    // console.log({"b_id":_b_id,"_pub_id":_pub_id,"Uploaded_page":uploadad_page_count,"Index":index});
+    // this.loader= true;
     const dialogOpen = this.dialog.open(AlertDialogComponent, {
       width: '400px',
       data:{_b_id:_b_id,_pub_id:_pub_id,_flag:'D',_type:'P'}
     });
 
     dialogOpen.afterClosed().subscribe(res => {
-      if(!res){
-      }
-      else{
-        console.log(index)
-         this.category.splice(index,1);
-         console.log(this.category);
-         this.inddatasource();
+      console.log(res);
+      if(res > 0){
+             this.delete_split_books(_b_id,_pub_id,uploadad_page_count,index)
       }
     })
+
+    
   }
 
   async  getPageCount(allbooks: any){
+    console.log(allbooks);
+    
     for(let i=0;i<allbooks.length;i++)
     {
       const formPdfBytes = await fetch(allbooks[i].full_book_path).then((res) => res.arrayBuffer());
@@ -179,8 +178,42 @@ export class BookListComponent implements OnInit {
       this.category[i]=allbooks[i];
       this.category[i].total_page_count = pageCount;
     }
-    console.log(this.category)
+    // console.log(this.category)
       this.inddatasource();
+  }
+
+  delete_split_books(_b_id:any,_pub_id:any,uploadad_page_count:any,index:any){
+   console.log({"b_id":_b_id,"_pub_id":_pub_id,"Uploaded_page":uploadad_page_count,"Index":index});
+    this.loader= true;
+    var _uploaded_pageCount = uploadad_page_count
+    var chk_response;
+    if(_uploaded_pageCount > 50){
+      this.utilyT.delete(_b_id,_pub_id).pipe(map(x=>JSON.parse(JSON.stringify(x)))).subscribe(res => {
+             chk_response =res;
+             if(chk_response.success > 0){
+                   this.delete_split_books(_b_id,_pub_id,(uploadad_page_count-50),index)  
+             }
+             else{
+                this.loader= false;
+                 this.utilyT.showToastr('Book deletion not possible','E')
+             }
+      })
+    }
+    else{
+      this.utilyT.delete(_b_id,_pub_id).pipe(map(x=>JSON.parse(JSON.stringify(x)))).subscribe(res => {
+        chk_response = res;
+        if(chk_response.success > 0){
+          this.loader= false;
+          this.utilyT.showToastr('Book Removed Successfully','S')
+          this.category.splice(index,1);
+         this.inddatasource();
+        }
+        else{
+          this.loader= false;
+          this.utilyT.showToastr('Book deletion not possible','E')
+        }
+      })
+    }
   }
 
 }

@@ -44,15 +44,16 @@ export class AlertDialogComponent implements OnInit {
    console.log('s')
   }
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(0);
   }
   delete(){
-     this.utilyT.delete(this.data._b_id,this.data._pub_id).subscribe(res => {
-      this.check_response = res;
-       this.dialogRef.close(this.check_response.success);
-       if(this.check_response.success > 0){this.utilyT.showToastr('Book Removed Successfully','S')}
-       else{this.utilyT.showToastr('Book deletion not possible','E')}
-     })
+    //  this.utilyT.delete(this.data._b_id,this.data._pub_id).subscribe(res => {
+    //   this.check_response = res;
+    //    this.dialogRef.close(this.check_response.success);
+    //    if(this.check_response.success > 0){this.utilyT.showToastr('Book Removed Successfully','S')}
+    //    else{this.utilyT.showToastr('Book deletion not possible','E')}
+    //  })
+    this.dialogRef.close(1);
   }
 
 }

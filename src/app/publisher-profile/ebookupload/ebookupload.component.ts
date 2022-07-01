@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { PublishercategoryshowService } from 'src/app/publishercategoryshow.service';
@@ -178,6 +178,12 @@ export class EbookuploadComponent implements OnInit {
   preview_modal:any;
   subcat_validation:boolean=true;
 
+  @HostListener('window:beforeunload',['$event']) unloadNotification($event:any){
+    if(this.lastFormGroup.dirty || this.firstFormGroup.dirty || this.secondFormGroup.dirty || this.category_subcategory.dirty){
+      $event.returnValue = true;
+    }
+  }
+
   ngOnInit(): void {
  // Multiselect Dropdown
  this.subcategory_dropdownSettings = { 
@@ -213,7 +219,7 @@ export class EbookuploadComponent implements OnInit {
   
     this.category_subcategory=this._formBuilder.group({
       pub_name: [this.pub_name, Validators.required],
-      isbn_no:['',[Validators.required,Validators.minLength(17),Validators.maxLength(17)]],
+      isbn_no:['',[Validators.required,Validators.minLength(17),Validators.maxLength(17),Validators.pattern('(?=(?:[0-9]+[-●]){4})[-●0-9]{17}$')]],
       cat_name:['',Validators.required],
       subcat_name:['',Validators.required],
       bk_name:['',Validators.required],
@@ -925,13 +931,13 @@ close_auto1() {
       this.upload_message="Maximum Limit Exceed in Sub-Category";
     }
     else {
-      if(this.checkContentRandomPages(this.g.r_from.value,this.g.c_from.value,this.g.c_to.value,"PP")){
-        this.upload_message = "*Preview Page must be greater than Contents Page No. From and Contents Page No. To";
-     }
-     else if(this.checkContentRandomPages(this.g.r_to.value,this.g.c_from.value,this.g.c_to.value,"PC")){
-       this.upload_message = "*Page Count must be greater than Contents Page No. From and Contents Page No. To";
-     }
-     else{
+    //   if(this.checkContentRandomPages(this.g.r_from.value,this.g.c_from.value,this.g.c_to.value,"PP")){
+    //     this.upload_message = "*Preview Page must be greater than Contents Page No. From and Contents Page No. To";
+    //  }
+    //  else if(this.checkContentRandomPages(this.g.r_to.value,this.g.c_from.value,this.g.c_to.value,"PC")){
+    //    this.upload_message = "*Page Count must be greater than Contents Page No. From and Contents Page No. To";
+    //  }
+    //  else{
       this.preview_modal=document.getElementById('preview');
       this.preview_modal.click();
       this.cate_gories.length=0;
@@ -942,7 +948,7 @@ close_auto1() {
       for(let i=0;i<this.subcategory_selectedItems.length;i++){
         this.subcate_gories[i]=this.subcategory_selectedItems[i];
       }
-     }
+    //  }
      
     }
  }
