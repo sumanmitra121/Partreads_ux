@@ -112,7 +112,7 @@ import { PublisherforgotpasswordComponent } from './publisher-profile/publisherf
 import { ChangeforgotpasswordComponent } from './publisher-profile/changeforgotpassword/changeforgotpassword.component';
 import { DatePipe } from '@angular/common';
 import {MatDialogModule} from '@angular/material/dialog';
-
+import {MatExpansionModule} from '@angular/material/expansion';
 // import {MatStepperModule} from '@angular/material/stepper';
 // import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 // import {
@@ -310,6 +310,7 @@ export function getAuthServiceConfigs() {
     // FileDragDropDirective
   ],
   imports: [
+    MatExpansionModule,
     MatProgressSpinnerModule,
     CarouselModule,
     ScrollingModule,

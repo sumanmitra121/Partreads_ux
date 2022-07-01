@@ -21,6 +21,7 @@ import { UtilityTService } from 'src/app/Utility/utility-t.service';
 export class CartpageComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('Cancel',{static:true}) Cancel!:ElementRef;
   displayedColumns: string[] = ['Thumbnail', 'Book Name', 'ISBN Number', 'Pages','Full Book', 'Price', 'Buy'];
   dataSource = new MatTableDataSource([]);
   constructor(private utilyT:UtilityTService,private show1:ShowcartService,private show:ShowcartService,private router:Router) { }
@@ -29,26 +30,37 @@ export class CartpageComponent implements OnInit {
   loader = true;
   p_id:any;
   c=0;
-  userdata11:any=[];
   modal_close:any;
   delete_id:any;
   url=GlobalConstants.apiURL;
-  check_response:any='';
   _bk_name:any;
   ngOnInit(): void {
     localStorage.setItem('address','/user/cart')
      this.inddatasource();
   }
   public inddatasource(){
-    this.userdata1.length=0;
     this.show.getcart(localStorage.getItem('u-id'), localStorage.getItem('user-type_user'), localStorage.getItem('remember_token')).pipe(map(x => JSON.parse(x))).subscribe(data=>{
+      console.log(data)
       this.userdata1 = data.success > 0 ? data.message : [];
-      this.loader = false;
-      this.dataSource = new MatTableDataSource(this.userdata1);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;    
+     this.fetchdata();
     })
 }
+ fetchdata(){
+  this.dataSource = new MatTableDataSource(this.userdata1);
+  this.dataSource.paginator = this.paginator;
+  this.dataSource.sort = this.sort; 
+  //FOR SEARCH OF NESTED LEVEL IN ARRAY OF OBJECTS
+  this.dataSource.filterPredicate = (data, filter: string) => {
+    const accumulator = (currentTerm:any, key:any) => {
+      return this.nestedFilterCheck(currentTerm, data, key);
+    };
+    const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+    // Transform the filter by converting it to lowercase and removing whitespace.
+    const transformedFilter = filter.trim().toLowerCase();
+    return dataStr.indexOf(transformedFilter) !== -1;
+  }
+  this.loader = false;
+ }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -57,17 +69,7 @@ export class CartpageComponent implements OnInit {
     }
   }
   gotobuy(v1:any,v2:any,book_name:any,frm:any,to:any,whole_book:any){
-
-    // localStorage.setItem('book_Index',v2);
-    // localStorage.setItem('Pub_id',v2);
-    // localStorage.setItem('book_name',book_name);
-    // localStorage.setItem('frm',frm);
-    // localStorage.setItem('to',to);
-    // localStorage.setItem('whole_book',whole_book);
     this.router.navigate(['/user/payment',v1,v2,book_name,frm,to,whole_book]);
-    // localStorage.setItem('user_book_id',v1);
-    // localStorage.setItem('user_pub_id',v2);
-    // this.router.navigate(['/user/bookdetails']);
   }
   delbook(v1:any,v2:any,v3:any,_bk_name:any){
     this.b_id=v1;
@@ -77,12 +79,12 @@ export class CartpageComponent implements OnInit {
   }
   del(){
     this.loader=true;
-    this.show.removeCart(localStorage.getItem('u-id'), localStorage.getItem('user-type_user'), localStorage.getItem('remember_token'),this.delete_id).subscribe(data=>{
-      this.check_response=JSON.parse(data);
-      this.modal_close=document.getElementById('Cancel');
-      this.modal_close.click();
-      if(this.check_response.success > 0){
-        this.inddatasource();
+    this.show.removeCart(localStorage.getItem('u-id'), localStorage.getItem('user-type_user'), localStorage.getItem('remember_token'),this.delete_id).pipe(map(x=>JSON.parse(x)),map(x => x.success)).subscribe(data=>{
+      this.Cancel.nativeElement.click();
+      if(data > 0){
+        var Index = this.userdata1.findIndex((x:any) => x._id == this.delete_id);
+        this.userdata1.splice(Index,1);
+        this.fetchdata()
         this.getcartvalue()
         this.loader=false;
         this.utilyT.showToastr('Removal of cart Successful!','S');
@@ -100,12 +102,18 @@ export class CartpageComponent implements OnInit {
     this.utilyT.getcartvalue().then((res) =>{
       this.c = Number(res);
     })
-    // this.show1.getcart(localStorage.getItem('u-id'), localStorage.getItem('user-type_user'), localStorage.getItem('remember_token')).subscribe(data=>{this.userdata11=JSON.parse(data);
-    //   if(this.userdata11.success=='1')
-    //   this.c=this.userdata11.message.length;
-    //   else
-    //   this.c=0;
-    // })
-    
+  }
+
+  nestedFilterCheck(search:any, data:any, key:any) {
+    if (typeof data[key] === 'object') {
+      for (const k in data[key]) {
+        if (data[key][k] !== null) {
+          search = this.nestedFilterCheck(search, data[key], k);
+        }
+      }
+    } else {
+      search += data[key];
+    }
+    return search;
   }
 }

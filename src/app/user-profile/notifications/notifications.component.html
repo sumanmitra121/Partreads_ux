@@ -15,19 +15,9 @@
     
 
             <div class="rightNotification">
-
-                <!-- <h1>Notifications</h1> -->
-               
-               <!--  <div class="book_loadMain" *ngIf="loader">
-
-                    <div class="loader loader-1">
-                        <div class="loader-outter"></div>
-                        <div class="loader-inner"></div>
-                      </div>
-               </div>	 -->
                <div id="cover-spin" *ngIf="loader"></div>
                 <div class="mainnotificationdiv" *ngIf="userData.length > 0">
-                    <div *ngFor="let row of userData;let i=index">
+                    <!-- <div *ngFor="let row of userData;let i=index">
                       <mat-card class="matCard" *ngIf="row.subject=='BookUpload'">
                               <mat-card-header>
                                 <mat-card-title> 
@@ -60,8 +50,6 @@
                           <h2 class="matcardtitleh2">
                             <a><i class="fa fa-inr" aria-hidden="true"></i> </a>
                              New transaction has been done successfully.
-                            <!-- <a class="float-right matIcon"><mat-icon>close</mat-icon></a> 
-                            <a class="float-right matIcon" ><mat-icon>expand_more</mat-icon></a> -->
                             <a class="float-right matIcon"  (click)="clear_all_notification('O',row._id,i)"><mat-icon>close</mat-icon></a> 
                             <a class="float-right matIcon" (click)="expandMore(i)"><mat-icon>expand_more</mat-icon></a>
                             <span style="display:none" id="date_{{i}}" class="customnotificationspan">{{row.date | date:'dd-MM-yyyy h:mma'}}</span>
@@ -73,8 +61,6 @@
                 
                           <mat-card-content style="display:none"  id="matcard{{i}}">    
                             <h4  class="matcardcontenth4" (click)="got_book_details_page(row.book_id,row.publisher_id)"> Transaction for {{row.bookdetails?.book_name}}  <span *ngIf="row.body!=''">( <i>Pages: {{row.body}} </i>) </span>  has been successfully made. </h4> 
-                              <!-- <h4 [routerLink]="['/admin/user_details',row.from_user_id]" class="matcardcontenth4" *ngIf="row.subject=='NewUserRegister'"> {{row.from_user_name}} has been registered as a user.</h4>
-                              <h4 [routerLink]="['/admin/pub_details',row.from_user_id]" class="matcardcontenth4" *ngIf="row.subject=='NewPublisherRegister'"> {{row.from_user_name}} has been registered as a publisher.</h4> -->
                             </mat-card-content>
                       </mat-card>
                 
@@ -86,8 +72,6 @@
                           <h2 class="matcardtitleh2">
                             <a><i class="fa fa-inr" aria-hidden="true"></i> </a>
                            Link shared.
-                            <!-- <a class="float-right matIcon" ><mat-icon>close</mat-icon></a> 
-                            <a class="float-right matIcon" ><mat-icon>expand_more</mat-icon></a> -->
                             <a class="float-right matIcon"  (click)="clear_all_notification('O',row._id,i)"><mat-icon>close</mat-icon></a> 
                             <a class="float-right matIcon" (click)="expandMore(i)"><mat-icon>expand_more</mat-icon></a>
                             <span style="display:none" id="date_{{i}}" class="customnotificationspan">{{row.date | date:'dd-MM-yyyy h:mma'}}</span>
@@ -99,7 +83,6 @@
                 
                           <mat-card-content style="display:none"  id="matcard{{i}}">     
                               <h4 class="matcardcontenth4">{{row.user_details?.name}} has shared the link of {{row.bookdetails?.book_name}}  
-                                <!-- <img src="{{row.book_image}}" height="30" width="25" alt="">   -->
                                 ( <i>Pages: {{row.body}} </i>) 
                               
                               </h4>
@@ -115,8 +98,7 @@
                           <h2 class="matcardtitleh2">
                             <a><i class="fa fa-inr" aria-hidden="true"></i> </a>
                             New payment has been done.
-                            <!-- <a class="float-right matIcon" ><mat-icon>close</mat-icon></a> 
-                            <a class="float-right matIcon" ><mat-icon>expand_more</mat-icon></a> -->
+                           
                             <a class="float-right matIcon"  (click)="clear_all_notification('O',row._id,i)"><mat-icon>close</mat-icon></a> 
                             <a class="float-right matIcon" (click)="expandMore(i)"><mat-icon>expand_more</mat-icon></a>
                             <span style="display:none" id="date_{{i}}" class="customnotificationspan">{{row.date | date:'dd-MM-yyyy h:mma'}}</span>
@@ -131,10 +113,49 @@
                           </mat-card-content>
                       </mat-card> 
                 
-                    </div>
-                    </div>
-                 
-
+                    </div> -->
+                    <mat-accordion class="example-headers-align" multi>
+                      <mat-expansion-panel *ngFor="let row of userData;let i=index">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title *ngIf="row.subject=='BookUpload'">
+                            <small><b><a><i class="fa fa-book" aria-hidden="true"></i></a>&nbsp;New Book Uploaded</b></small>
+                          </mat-panel-title>
+                          <mat-panel-title *ngIf="row.subject=='BuyBookPages'">
+                            <small><b>  <a><i class="fa fa-inr" aria-hidden="true"></i> </a>&nbsp;New transaction has been done successfully</b> </small>
+                          </mat-panel-title>
+                          <mat-panel-title *ngIf="row.subject=='LinkShare'">
+                            <small><b><a><i class="fa fa-share" aria-hidden="true"></i></a>&nbsp;Link shared</b></small> 
+                          </mat-panel-title>
+                          <mat-panel-title *ngIf="row.subject=='BuyBookPayment'">
+                            <small><b><a><i class="fa fa-inr" aria-hidden="true"></i> </a>&nbsp;New payment has been done</b></small>
+                          </mat-panel-title> 
+                          <mat-panel-description>
+                            <small class="mr-2"><b>{{row.date | date:'dd-MM-yyyy h:mma'}}</b></small>
+                            <mat-icon class="mr-2" (click)="clear_all_notification('O',row._id,i)">delete_outline</mat-icon>
+                          </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <ng-container *ngIf="row.subject=='BookUpload'">
+                        <h4 class="matcardcontenth4" (click)="got_book_details_page(row.book_id,row.publisher_id)"> 
+                          {{row.publisher_details?.name}} has
+                          {{msg}}
+                          {{row.bookdetails?.book_name}} at {{row.date | date:'dd-MM-yyyy h:mma'}}.
+                        </h4>
+                      </ng-container>
+                      <ng-container *ngIf="row.subject=='BuyBookPages'">
+                        <h4  class="matcardcontenth4" (click)="got_book_details_page(row.book_id,row.publisher_id)"> Transaction for {{row.bookdetails?.book_name}}  <span *ngIf="row.body!=''">( <i>Pages: {{row.body}} </i>) </span>  has been successfully made. </h4> 
+                      </ng-container>
+                      <ng-container *ngIf="row.subject=='LinkShare'">
+                        <h4 class="matcardcontenth4">{{row.user_details?.name}} has shared the link of {{row.bookdetails?.book_name}}  
+                          ( <i>Pages: {{row.body}} </i>) 
+                        
+                        </h4>
+                      </ng-container>
+                      <ng-container *ngIf="row.subject=='BuyBookPayment'">
+                        <h4 class="matcardcontenth4">Payment of  <i>Rs: {{row.body}}/- </i> has been made successfully</h4>
+                      </ng-container>
+                      </mat-expansion-panel>                 
+                    </mat-accordion>
+                  </div>
                       <div class="row mb-2 mt-2" *ngIf="userData.length > 0">
                         <div class="col-2">
                         </div>
