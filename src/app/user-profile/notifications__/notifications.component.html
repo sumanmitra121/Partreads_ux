@@ -44,9 +44,9 @@
                 
                                 <mat-card-content style="display:none"  id="matcard{{i}}">     
                                     <h4 class="matcardcontenth4" (click)="got_book_details_page(row.book_id,row.publisher_id)"> 
-                                      {{row.publisher_details?.name}} has
+                                      {{row.publisher_name}} has
                                       {{msg}}
-                                      {{row.bookdetails?.book_name}} at {{row.date | date:'dd-MM-yyyy h:mma'}}.
+                                      {{row.book_name}} at {{row.date | date:'dd-MM-yyyy h:mma'}}.
                         
                                     
                                     </h4>
@@ -72,7 +72,7 @@
                        </mat-card-header>
                 
                           <mat-card-content style="display:none"  id="matcard{{i}}">    
-                            <h4  class="matcardcontenth4" (click)="got_book_details_page(row.book_id,row.publisher_id)"> Transaction for {{row.bookdetails?.book_name}}  <span *ngIf="row.body!=''">( <i>Pages: {{row.body}} </i>) </span>  has been successfully made. </h4> 
+                            <h4  class="matcardcontenth4" (click)="got_book_details_page(row.book_id,row.publisher_id)"> Transaction for {{row.book_name}}  <span *ngIf="row.body!=''">( <i>Pages: {{row.body}} </i>) </span>  has been successfully made. </h4> 
                               <!-- <h4 [routerLink]="['/admin/user_details',row.from_user_id]" class="matcardcontenth4" *ngIf="row.subject=='NewUserRegister'"> {{row.from_user_name}} has been registered as a user.</h4>
                               <h4 [routerLink]="['/admin/pub_details',row.from_user_id]" class="matcardcontenth4" *ngIf="row.subject=='NewPublisherRegister'"> {{row.from_user_name}} has been registered as a publisher.</h4> -->
                             </mat-card-content>
@@ -98,7 +98,7 @@
                        </mat-card-header>
                 
                           <mat-card-content style="display:none"  id="matcard{{i}}">     
-                              <h4 class="matcardcontenth4">{{row.user_details?.name}} has shared the link of {{row.bookdetails?.book_name}}  
+                              <h4 class="matcardcontenth4">{{row.publisher_name}} has shared the link of {{row.book_name}}  
                                 <!-- <img src="{{row.book_image}}" height="30" width="25" alt="">   -->
                                 ( <i>Pages: {{row.body}} </i>) 
                               

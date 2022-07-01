@@ -14,7 +14,7 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from 'src/app/user-profile/alert-dialog/alert-dialog.component';
 import { map } from 'rxjs/operators';
-//import * as $ from 'jquery';
+import { PDFDocument } from 'pdf-lib';
 declare const showprofile: any;
 @Component({
   selector: 'app-book-list',
@@ -60,10 +60,10 @@ export class BookListComponent implements OnInit {
   dataSource = new MatTableDataSource([]);
 
    public inddatasource(){
-     console.log(this.category);
     this.dataSource = new MatTableDataSource(this.category);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.loader=false;
  }
   ngOnInit(): void {
       this.show_it();
@@ -105,9 +105,10 @@ export class BookListComponent implements OnInit {
 
     this.booklistshow.getBooks(this.p).pipe(map(x=>JSON.parse(x)),map(x=> x.message)).subscribe(data => {
      this.loader=false;
-      this.category =data;
-      console.log(this.category);
-      this.inddatasource();
+      // this.category =data;
+      // console.log(this.category);
+      this.getPageCount(data);
+      // this.inddatasource();
     },(errorMessage) => {  
      
       console.log("Error Status:" + errorMessage)
@@ -145,7 +146,7 @@ export class BookListComponent implements OnInit {
     }
   }
   onpage(){
-   this.loader=false;
+  //  this.loader=false;
   }
   edit_bk(i:any,v1:any,flag:any){
     this.router.navigate(['publisher/viewDetails',i,v1,flag])
@@ -166,6 +167,20 @@ export class BookListComponent implements OnInit {
          this.inddatasource();
       }
     })
+  }
+
+  async  getPageCount(allbooks: any){
+    for(let i=0;i<allbooks.length;i++)
+    {
+      const formPdfBytes = await fetch(allbooks[i].full_book_path).then((res) => res.arrayBuffer());
+      const pdfDoc = await PDFDocument.load(formPdfBytes);
+      const pageCount = pdfDoc.getPageCount();
+      // this.userdata.message[i].total_pages=pageCount;
+      this.category[i]=allbooks[i];
+      this.category[i].total_page_count = pageCount;
+    }
+    console.log(this.category)
+      this.inddatasource();
   }
 
 }

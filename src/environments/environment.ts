@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  book_url:'https://partreads.com/testlrvlaws/public/book-images/',
 };
 
 /*

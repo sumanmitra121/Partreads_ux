@@ -637,28 +637,27 @@ onClosesubcate(item:any){}
       this.b.book_pdf = this.file_book;
       this.b1.book_name = v4;
       this.upld.upload(this.b,v12,this.selectedItems,this.subcategory_selectedItems,full_book_price,pub_year,edition,this.other_contents,d_charge,mrp,offerprice).subscribe(data => {
-        console.log(data);
-        debugger;
+        //debugger;
         this.bookdata = JSON.parse(data);
         console.log("Totalpage:" +this.bookdata.totalpage);
-        var checkpgcount = 50;
+        // var checkpgcount = 50;
+        var checkpgcount = 30;
         var random_pages=new Array();
         var pagecountstart;
         // var pagecounter;
         this.pagecounter=this.bookdata.pagecounter;
         pagecountstart=this.bookdata.pagecountstart;
         random_pages=this.bookdata.random_pages;
-        console.log(this.pages);
-        debugger;
-
+        //debugger;
         if (this.bookdata.totalpage > checkpgcount) {
-        debugger;
+        //debugger;
 
           this.startpage = 1;
-          this.endpage = 50;
+          // this.endpage = 50;
+          this.endpage = 30;
           this.splitbookupload(this.bookdata.mainbook_url, this.bookdata.id, this.bookdata.book_id, this.bookdata.contents_from, this.bookdata.contents_to, this.bookdata.random_from, this.bookdata.random_to, this.bookdata.price, this.bookdata.user_name, this.bookdata.uploaded_page = this.pages, this.startpage, this.endpage,pagecountstart,random_pages,this.pagecounter);
         } else {
-        debugger;
+        //debugger;
   
           var startpage = 1;
           this.endpage = this.bookdata.totalpage;
@@ -684,7 +683,7 @@ onClosesubcate(item:any){}
 
 
   splitbookupload(mainbook_url: any, id: any, book_id: any, contents_from: any, contents_to: any, random_from: any, random_to: any, price: any, user_name: any, uploaded_page: any, startpage: any, endpage: any,pagecountstart:any,random_pages:any,page_counter:any) {
-    debugger;
+    //debugger;
     this.split.upload_book(mainbook_url, id, book_id, contents_from, contents_to, random_from, random_to, price, user_name, uploaded_page, this.startpage, this.endpage,pagecountstart,random_pages,page_counter).subscribe(data11 => {
       console.log(data11);
       this.temp = JSON.parse(data11);
@@ -694,7 +693,8 @@ onClosesubcate(item:any){}
         this.pagecounter=this.temp.pagecounter;
         if (Number(this.temp.uploaded_page) != Number(this.temp.totalpage)) {
           this.startpage = Number(this.temp.uploaded_page) + 1;
-          this.endpage = Number(this.temp.uploaded_page) + 50;
+          // this.endpage = Number(this.temp.uploaded_page) + 50;
+          this.endpage = Number(this.temp.uploaded_page) + 30;
           console.log("start page" + this.startpage);
           console.log("end page " + this.endpage);
           this.pgbar = ((this.counter / this.counter_temp) * 100);
@@ -807,83 +807,47 @@ onChangeSearch1(val: any) {
 }
 
 onFocused1(e: any) {
-
-  console.log("onfocused1");
-  // console.log(e);
-  console.log("put_in:" + this.put_in);
   if (this.put_in != '') {
-    // console.log("hiii");
     console.log(this.userData.message.length);
     for (let i = 0; i < this.userData.message.length; i++) {
-      console.log(this.userData.message[i].name);
       if (this.put.value == this.userData.message[i].name) {
         this.pubcat.category_id = this.userData.message[i]._id;
         this.m1 = this.userData.message[i]._id;
-
       }
-
     }
     this.showsubcat.getData(this.pubcat).subscribe(data => {
-
       this.userData1 = data;
-
       this.len = this.userData1.message.length;
-      console.log( this.len);
-      
       for (let i = 0; i < this.userData1.message.length; i++) {
-        console.log(this.userData1.message[i].name)
-        // this.category1[i] = this.userData1.message[i];
-        // this.m = this.userData1.message[i]._id;
-        // console.log("subcategory_id1:" + this.m)
-        // console.log("subcategory_name:" + this.category1[i].name)
-
-
           this.category1[i] = this.userData1.message[i];
           this.m = this.userData1.message[i]._id;
-          // console.log("subcategory_name:" + this.category1[i].name);
-          // console.log("subcategory_id1:" + this.m); 
-
-       
       }
-
     })
   }
   else {
-    console.log("hello");
-    // for (let i = 0; i < this.len; i++) {
-    //   this.category1[i] = '';
-    // }
     this.category1.length=0;
-  
   }
   
 }
-selectEvent1(e: any) {
-  //  console.log(e.name);
-  //  console.log(e._id)
-  // alert("Event:" +e);
 
-  this.subput = document.getElementById('sub');
-  this.subput.value = e.name;
+// selectEvent1(e: any) {
+  // this.subput = document.getElementById('sub');
+  // this.subput.value = e.name;
 
-  if (e.name != '') {
+  // if (e.name != '') {
 
-    this.subcat_change = true;
-    for (let i = 0; i < this.userData1.message.length; i++) {
-      if (this.userData1.message[i]._id == e._id) {
-        this.m = e._id;
-      }
+    // this.subcat_change = true;
+    // for (let i = 0; i < this.userData1.message.length; i++) {
+      // if (this.userData1.message[i]._id == e._id) {
+        // this.m = e._id;
+      // }
 
-    }
-  }
-  else{
-    this.subcat_change = false;
-  }
-
-
-  console.log("category_id:" + this.m1);
-  console.log("Subcategory_id:" + this.m);
-}
+    // }
+  // }
+  // else{
+    // this.subcat_change = false;
+  // }
+// }
 
 
 close_auto() {
@@ -930,7 +894,6 @@ close_auto1() {
 
  //For Preview Modal///
  previewValues(v1: any, v2: any, v3: any, v4: string, v5: any, v6: any, v7: any, v8: any, v9: any, v10: any, v11: any, v12: any, v13: any,full_book_price:any,pub_year:any,edition:any,d_charge:any,mrp:any,offerprice:any){
-  
     for(let i=0;i<this.other_contents.length;i++){
       if(this.other_contents.length==1 && this.other_contents[i].title=='' && this.other_contents[i].description=='' && this.other_contents[i].actual_page=='' && this.other_contents[i].pdf_page==''){
         $('#showMoreDetails').hide();
@@ -986,7 +949,6 @@ close_auto1() {
 
  getErrorMessage() {
    return 'Please Provide Category';
-
   }
   // For Adding row on click on add button
   addRow(){
@@ -1002,11 +964,6 @@ close_auto1() {
       // return true;
   }  
   }
-  preview_Details(){
-    console.log(this.other_contents);
-    
-  }
-
   //For checking the pattern of ISBN NO
   check_pattern(v:any){
     if ((/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/.test(v.target.value)) || (v.target.value=='')||v.target.value.length<17) {
@@ -1015,10 +972,6 @@ close_auto1() {
      else {
       this.isbn_check=true;
      }
-     var phone = '9783161484100';
-// 978-3-16-148410-0
-    var formattedPhone = v.target.value.slice(0, 3) + "-" + v.target.value.slice(3, 4)+"-"+v.target.value.slice(4, 6)+"-"+phone.slice(6, 12)+"-"+v.target.value.slice(12, 14);
-    console.log( formattedPhone );
   }
   //For Making the image empty
   make_image_empty(){
@@ -1039,7 +992,6 @@ isNumberKey(evt:any)
 // 
 addHyp(e:any){
   this.isbnPattern=e.target.value
-  console.log(e.target.value)
   if(e.target.value!=''){
     if(this.isbnPattern.length==3||this.isbnPattern.length==5||this.isbnPattern.length==8||this.isbnPattern.length==15)
     this.category_subcategory.patchValue({
@@ -1048,10 +1000,16 @@ addHyp(e:any){
   }
 }
 checkContentRandomPages(str:any,_c_from:any,_c_to:any,_flag:any):boolean{
-  if(_flag  == 'PP'){
+  console.log(str);
+  console.log(_c_from);
+  console.log(_c_to);
+
+
+  if(_flag  == 'PP'){   
     const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
     const c_from = str.split(specialChars);
     const found = c_from.find((e: string) =>{
+        console.log(e)
       return e <= _c_from || e <= _c_to 
     })
     return found == undefined ? false : true;
@@ -1059,7 +1017,6 @@ checkContentRandomPages(str:any,_c_from:any,_c_to:any,_flag:any):boolean{
   else{
     return str <= _c_to || str <= _c_from ? true : false ;
   }
-  
 }
 }
 

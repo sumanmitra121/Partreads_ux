@@ -13,12 +13,13 @@ import { interval, observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { ChangepasswordserveService } from '../site-header/changepasswordserve.service';
 import { ShowcartService } from '../user-profile/cartpage/showcart.service';
-import { NotificationserveService } from '../user-profile/notifications/notificationserve.service';
 import { DashboardserviceService } from '../user-profile/dash/dashboardservice.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UtilityTService } from '../Utility/utility-t.service';
 import { AlertDialogComponent } from '../user-profile/alert-dialog/alert-dialog.component';
+import { environment } from 'src/environments/environment';
+import { NotificationserveService } from '../user-profile/notifications/notificationserve.service';
 // import { ConsoleReporter } from 'jasmine';
 // import { interval } from 'rxjs';
 declare var showprofile: any;
@@ -35,6 +36,7 @@ declare var $:any;
     '../../assets/cssfiles/apps_inner.css']
 })
 export class UserheaderafterloginComponent implements OnInit, OnDestroy{
+  bk_url= environment.book_url;
   Coupon_Form!:FormGroup;
   button_div: any;
   hide:boolean = true;
