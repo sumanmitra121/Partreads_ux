@@ -98,6 +98,7 @@ export class OrderHistoryComponent implements OnInit  {
       this.loading =false;
     }
     else{
+         this.loading =false;
          this.utilyT.showToastr('No payment history available to download','E');
     }
     }

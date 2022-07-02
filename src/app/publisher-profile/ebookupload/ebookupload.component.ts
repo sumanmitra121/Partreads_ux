@@ -178,11 +178,11 @@ export class EbookuploadComponent implements OnInit {
   preview_modal:any;
   subcat_validation:boolean=true;
 
-  @HostListener('window:beforeunload',['$event']) unloadNotification($event:any){
-    if(this.lastFormGroup.dirty || this.firstFormGroup.dirty || this.secondFormGroup.dirty || this.category_subcategory.dirty){
-      $event.returnValue = true;
-    }
-  }
+  // @HostListener('window:beforeunload',['$event']) unloadNotification($event:any){
+  //   if(this.lastFormGroup.dirty || this.firstFormGroup.dirty || this.secondFormGroup.dirty || this.category_subcategory.dirty){
+  //     $event.returnValue = true;
+  //   }
+  // }
 
   ngOnInit(): void {
  // Multiselect Dropdown

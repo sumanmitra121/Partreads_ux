@@ -194,8 +194,7 @@ export class UtilityTService {
   }
 
   submitEmail(_api_name:any,_dt:any){
-       console.log(_dt);
-      //  return this.http.post(this.url+_api_name,formData);
+       return this.http.post(this.url+_api_name,_dt,{responseType:"text"});
   }
 
   sendIsConnected(_isConnected:any){this.isConnected.next(_isConnected)}

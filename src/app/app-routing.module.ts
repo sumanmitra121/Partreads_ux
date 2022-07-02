@@ -258,8 +258,9 @@ const routes: Routes = [
   {
     path: 'publisher/ebookupload',
     canActivate: [PublisherAuthGuard,UserloginauthGuard],
-    component: EbookuploadComponent,
-    canDeactivate:[EventHandledGuard]
+    component: EbookuploadComponent
+    // ,
+    // canDeactivate:[EventHandledGuard]
   },
   {
     path: 'publisher/notification',

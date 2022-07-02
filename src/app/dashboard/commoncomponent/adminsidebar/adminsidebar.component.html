@@ -156,6 +156,17 @@
         </a>
       </li>
 
+      <li class="nav-item" *ngIf="use_coupon=='Y'">
+        <a class="nav-link" routerLinkActive="active"  routerLink="/admin/email">
+          <!-- <i class="fa fa-inr" aria-hidden="true"></i> -->
+          <mat-icon class="dashboard"> email</mat-icon>
+          <span class="menu-title">Marketing Mail</span>
+          <!-- <i class="fa fa-chevron-right arowRight" aria-hidden="true"></i> -->
+          <mat-icon class="cheveron">chevron_right</mat-icon>
+        </a>
+      </li>
+
+
         </ul>
       </nav>
 

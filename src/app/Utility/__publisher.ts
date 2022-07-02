@@ -11,3 +11,4 @@ export class Publishers{
     public verify_flag!: string;
     public _id!:string;
 }
+

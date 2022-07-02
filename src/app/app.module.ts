@@ -193,6 +193,7 @@ import { TransformPipe } from './transform.pipe';
 import { LoaderComponent } from './CommonLoader/loader/loader.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { adminemailComponent } from './dashboard/AdminEmail/adminemail.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 export function getAuthServiceConfigs() {
   let config = new AuthServiceConfig(
       [
@@ -310,6 +311,7 @@ export function getAuthServiceConfigs() {
     // FileDragDropDirective
   ],
   imports: [
+    AngularEditorModule,
     MatExpansionModule,
     MatProgressSpinnerModule,
     CarouselModule,
