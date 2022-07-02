@@ -13,7 +13,9 @@ import { ViewChild } from '@angular/core';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from 'src/app/user-profile/alert-dialog/alert-dialog.component';
-//import * as $ from 'jquery';
+import { map } from 'rxjs/operators';
+import { PDFDocument } from 'pdf-lib';
+import { UtilityTService } from 'src/app/Utility/utility-t.service';
 declare const showprofile: any;
 @Component({
   selector: 'app-book-list',
@@ -35,24 +37,18 @@ declare const showprofile: any;
   ]
 })
 export class BookListComponent implements OnInit {
+  _modal_body:any;
+  pdf_loader:boolean = false;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  constructor(public dialog: MatDialog,private toastr:ToastrManager,private booklistshow: BooklistService, private actv: ActivateService, private router: Router, private cookieService: CookieService) { }
+  constructor(public utilyT:UtilityTService,public dialog: MatDialog,private toastr:ToastrManager,private booklistshow: BooklistService, private actv: ActivateService, private router: Router, private cookieService: CookieService) { }
   p: any;
   book_name: any;
-  userData: any;
   category: any = [];
-  totaldata: any = [];
-  totaldata1: any = [];
   a: any;
-  row_id: any;
   tick_cross: boolean = true;
-  icon!: string;
-  showstatus: any = [];
   link: any;
   bk_name: any;
-  h4_el: any;
-  src_el: any;
   alert_div: any;
   alert_show = true;
   loader = true;
@@ -65,130 +61,39 @@ export class BookListComponent implements OnInit {
   dataSource = new MatTableDataSource([]);
 
    public inddatasource(){
-     console.log(this.category);
     this.dataSource = new MatTableDataSource(this.category);
-   
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.loader = this.dataSource.data.length > 0 ? false: true;
+    console.log(this.dataSource.data.length);
+    
  }
-
-
-
-
-
   ngOnInit(): void {
-    // if (localStorage.getItem('uploader') == '1') {
-    //   this.alert_show = false;
-    //   localStorage.setItem('uploader', '0');
-    // }
-    // else {
-    //   this.alert_show = true;
-    // }
-    // this.p = new pubid(localStorage.getItem('pub-id'));
-
-    // this.booklistshow.getBooks(this.p).subscribe(data => {
-      //  console.log(data);
-      // this.userData = data;
-      //  console.log(this.userData);
-      // var obj = JSON.parse(this.userData);
-      // this.totaldata = obj.message;
-      //  console.log(this.totaldata);
-
-      // for (let i = 0; i < this.totaldata.length; i++) {
-      //   this.category[i] = this.totaldata[i];
-
-      // }
-
-      //  console.log(JSON.parse(this.userData.message));
-    // })
       this.show_it();
       localStorage.setItem('address','/publisher/book-list');
-
   }
   close_alert() {
     this.alert_div = document.getElementById('uploaded');
     this.alert_div.style.display = 'none';
   }
-  showbookname(v1: any, v2: any) {
-    this.loader=true;
-    console.log(v1 + " " + v2);
+  showbookname(v1: any, v2: any,_flag:any) {
+    this.pdf_loader=true;
+     this._modal_body = _flag;
     this.bk_name = v1;
     this.link = v2;
-    document.getElementById('bookname')?.remove();
-    this.h4_el = document.createElement("h4");
-    this.h4_el.class = "modal-title";
-    this.h4_el.id = "bookname";
-    this.h4_el.append(this.bk_name);
-    document.getElementById('header-h4')?.appendChild(this.h4_el);
-    // document.getElementById('booklink')?.remove();
-    // this.src_el = document.createElement("embed");
-    // this.src_el.id = "booklink";
-    // this.src_el.frameborder = "0";
-    // this.src_el.width = "100%";
-    // this.src_el.height = "400px";
-    this.link = this.link + "#toolbar=0&navpanes=0&scrollbar=0";
-    //document.getElementById('modal_body_id')?.appendChild(this.src_el);
+    this.pdf_loader = false;
   }
-  show() { showprofile(); }
-  logout() {
-    localStorage.removeItem('pub-token');
-    localStorage.setItem('pub-loggedin', 'false');
-    this.cookieService.delete('pub-cookie-name');
-    this.router.navigate(['/publisher/logpub']);
-  }
-  activation(v1:any,v2:any){
+  activation(v1:any,v2:any,_flag:any){
      this.value1=v1;
      this.value2=v2;
+     this._modal_body = _flag;
 }
   activation1() {
-    // if (confirm("Are you sure to change the status?")) {
-      // console.log(v1 + " " + v2);
-
       this.a = new activebook(this.value1,this.value2);
-      this.actv.activate(this.a).subscribe(data => {
-        console.log(data)
-        this.book_name = data;
-        var obj1 = JSON.parse(this.book_name);
-
-        console.log(obj1.success);
-        console.log(obj1.message.id);
-        this.row_id = 'active' + obj1.message.id;
-        location.reload();
-        if (obj1.message.active_book == 'I') {
-          console.log(document.getElementById(this.row_id)?.innerHTML);
-          console.log(document.getElementById(this.row_id)?.firstChild?.remove());
-          var appendTag = document.createElement("a");
-          
-          appendTag.setAttribute("class","statusCross");
-           appendTag.setAttribute("click", "activation('" + obj1.message.id + "','" + obj1.message.active_book + "')");
-          var iappendTag = document.createElement("i");
-       
-          iappendTag.setAttribute("class", "fa fa-time");
-          iappendTag.setAttribute("aria-hidden", "true");
-          appendTag.appendChild(iappendTag);
-          document.getElementById(this.row_id)?.appendChild(appendTag);
-          location.reload();
-        } else if (obj1.message.active_book == 'A') {
-          console.log(document.getElementById(this.row_id)?.innerHTML);
-          console.log(document.getElementById(this.row_id)?.firstChild?.remove());
-          var appendTag = document.createElement("a");
-          // appendTag.className="statusCross";
-          appendTag.setAttribute("class","statusTick");
-          appendTag.setAttribute("click", "activation('" + obj1.message.id + "','" + obj1.message.active_book + "')");
-          var iappendTag = document.createElement("i");
-          // iappendTag.className="fa fa-times";
-          iappendTag.setAttribute("class", "fa fa-check");
-          iappendTag.setAttribute("aria-hidden", "true");
-          appendTag.appendChild(iappendTag);
-          document.getElementById(this.row_id)?.appendChild(appendTag);
-          location.reload();
-        }
-
+      this.actv.activate(this.a).pipe(map(x => JSON.parse(x)),map(x=> x.message)).subscribe(data => {
+        var findIndex = this.category.findIndex((x:any) => x._id == data.id);
+        this.category[findIndex].active_book = data.active_book;
       })
-
-    // }
-
-
   }
 
   public show_it() {
@@ -201,19 +106,8 @@ export class BookListComponent implements OnInit {
     }
     this.p = new pubid(localStorage.getItem('pub-id'));
 
-    this.booklistshow.getBooks(this.p).subscribe(data => {
-     this.loader=false;
-      this.userData = data;
-      var obj = JSON.parse(this.userData);
-      this.totaldata = obj.message;
-
-      for (let i = 0; i < this.totaldata.length; i++) {
-        this.category[i] = this.totaldata[i];
-
-      }
-     
-      this.inddatasource();
-      //  console.log(JSON.parse(this.userData.message));
+    this.booklistshow.getBooks(this.p).pipe(map(x=>JSON.parse(x)),map(x=> x.message)).subscribe(data => {
+      this.getPageCount(data);
     },(errorMessage) => {  
      
       console.log("Error Status:" + errorMessage)
@@ -235,6 +129,7 @@ export class BookListComponent implements OnInit {
         // this.router.navigate(['404pagenotfound', this.substring]);
         this.toastr.warningToastr("Something went wrong , please try again later",'',{position:'top-center',animate:'slideFromTop',toastTimeout:50000,maxShown:'1'})
       }
+      this.loader=false;
      })
   
   }
@@ -249,31 +144,76 @@ export class BookListComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  onpage(){
-   this.loader=false;
-  }
+  onpage(){}
   edit_bk(i:any,v1:any,flag:any){
-    // alert('hello');
-    console.log(i+" "+v1);
     this.router.navigate(['publisher/viewDetails',i,v1,flag])
   }
-  deleteBook(_b_id:any,_pub_id:any,index:any){
+  deleteBook(_b_id:any,_pub_id:any,uploadad_page_count:any,index:any){
+    // console.log({"b_id":_b_id,"_pub_id":_pub_id,"Uploaded_page":uploadad_page_count,"Index":index});
+    // this.loader= true;
     const dialogOpen = this.dialog.open(AlertDialogComponent, {
       width: '400px',
       data:{_b_id:_b_id,_pub_id:_pub_id,_flag:'D',_type:'P'}
     });
 
     dialogOpen.afterClosed().subscribe(res => {
-      if(!res){
-         console.log('failed')
-      }
-      else{
-        console.log(index)
-         this.category.splice(index,1);
-         console.log(this.category);
-         this.inddatasource();
+      console.log(res);
+      if(res > 0){
+             this.delete_split_books(_b_id,_pub_id,uploadad_page_count,index)
       }
     })
+
+    
+  }
+
+  async  getPageCount(allbooks: any){
+    console.log(allbooks);
+    
+    for(let i=0;i<allbooks.length;i++)
+    {
+      const formPdfBytes = await fetch(allbooks[i].full_book_path).then((res) => res.arrayBuffer());
+      const pdfDoc = await PDFDocument.load(formPdfBytes);
+      const pageCount = pdfDoc.getPageCount();
+      // this.userdata.message[i].total_pages=pageCount;
+      this.category[i]=allbooks[i];
+      this.category[i].total_page_count = pageCount;
+    }
+    // console.log(this.category)
+      this.inddatasource();
+  }
+
+  delete_split_books(_b_id:any,_pub_id:any,uploadad_page_count:any,index:any){
+   console.log({"b_id":_b_id,"_pub_id":_pub_id,"Uploaded_page":uploadad_page_count,"Index":index});
+    this.loader= true;
+    var _uploaded_pageCount = uploadad_page_count
+    var chk_response;
+    if(_uploaded_pageCount > 50){
+      this.utilyT.delete(_b_id,_pub_id).pipe(map(x=>JSON.parse(JSON.stringify(x)))).subscribe(res => {
+             chk_response =res;
+             if(chk_response.success > 0){
+                   this.delete_split_books(_b_id,_pub_id,(uploadad_page_count-50),index)  
+             }
+             else{
+                this.loader= false;
+                 this.utilyT.showToastr('Book deletion not possible','E')
+             }
+      })
+    }
+    else{
+      this.utilyT.delete(_b_id,_pub_id).pipe(map(x=>JSON.parse(JSON.stringify(x)))).subscribe(res => {
+        chk_response = res;
+        if(chk_response.success > 0){
+          this.loader= false;
+          this.utilyT.showToastr('Book Removed Successfully','S')
+          this.category.splice(index,1);
+         this.inddatasource();
+        }
+        else{
+          this.loader= false;
+          this.utilyT.showToastr('Book deletion not possible','E')
+        }
+      })
+    }
   }
 
 }

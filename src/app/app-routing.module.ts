@@ -29,7 +29,7 @@ import { UserRegComponent } from './user-profile/user-reg/user-reg.component';
 import { UserLoginComponent } from './user-profile/user-login/user-login.component';
 import { PurchaseListComponent } from './user-profile/purchase-list/purchase-list.component';
 import { UserDashboardComponent } from './user-profile/user-dashboard/user-dashboard.component';
-import { NotificationsComponent } from './user-profile/notifications/notifications.component';
+// import { NotificationsComponent } from './user-profile/notifications/notifications.component';
 import { OrderHistoryComponent } from './user-profile/order-history/order-history.component';
 import { UserbookdetailspageComponent } from './user-profile/userbookdetailspage/userbookdetailspage.component';
 import { AllbooksComponent } from './allbooks/allbooks.component';
@@ -81,6 +81,8 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
 import { TermsComponent } from './terms/terms.component';
 import { UnSubscribeComponent } from './user-profile/un-subscribe/un-subscribe.component';
 import { adminemailComponent } from './dashboard/AdminEmail/adminemail.component';
+import { NotificationsComponent } from './user-profile/notifications/notifications.component';
+import { EventHandledGuard } from './Utility/event-handled.guard';
 
 
 const routes: Routes = [
@@ -256,7 +258,8 @@ const routes: Routes = [
   {
     path: 'publisher/ebookupload',
     canActivate: [PublisherAuthGuard,UserloginauthGuard],
-    component: EbookuploadComponent
+    component: EbookuploadComponent,
+    canDeactivate:[EventHandledGuard]
   },
   {
     path: 'publisher/notification',

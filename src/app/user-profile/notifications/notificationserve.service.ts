@@ -10,7 +10,9 @@ import { GlobalConstants } from 'src/app/globalvar/global';
 export class NotificationserveService {
   user_remove_notification=GlobalConstants.apiURL+'/api/user/notificationremove';
 
-  url=GlobalConstants.apiURL+'/api/user/notificationshow';
+  // url=GlobalConstants.apiURL+'/api/user/notificationshow';
+  url=GlobalConstants.apiURL+'/api/user/notificationshownew';
+
   constructor(private http:HttpClient) { }
   getData(id:any,user_type:any,remember_token:any){
     const formdata=new FormData();

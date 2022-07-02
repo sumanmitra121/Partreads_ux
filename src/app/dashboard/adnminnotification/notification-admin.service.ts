@@ -8,13 +8,15 @@ import { GlobalConstants } from 'src/app/globalvar/global';
   providedIn: 'root'
 })
 export class NotificationAdminService {
-  _url=GlobalConstants.apiURL+'/api/admin/notificationshow';
+  // _url=GlobalConstants.apiURL+'/api/admin/notificationshow';
+  _url=GlobalConstants.apiURL+'/api/admin/notificationshownew';
+
   admin_remove_notification=GlobalConstants.apiURL+'/api/admin/notificationremove';
   constructor(private http:HttpClient) { }
   get_admin_notification(v1:any){
    const formdata = new FormData();
   formdata.append('admin_id',v1);
-  return this.http.post(this._url,formdata,{responseType:'text'})
+  return this.http.get(this._url,{responseType:'text'})
   .pipe(
     // timeout(15000),
     retry(1));

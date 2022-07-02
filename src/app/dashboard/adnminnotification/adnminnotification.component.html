@@ -130,9 +130,9 @@
              </mat-card-header>
 
                 <mat-card-content style="display:none"  id="matcard{{i}}">     
-                    <h4 class="matcardcontenth4"> {{row.publisher_name}} has
+                    <h4 class="matcardcontenth4"> {{row.publisher_details?.name}} has
                       {{msg}}
-                      {{row.book_name}} at {{row.date | date:'dd-MM-yyyy h:mma'}}.
+                      {{row.bookdetails?.book_name}} at {{row.date | date:'dd-MM-yyyy h:mma'}}.
                       
                     </h4>
                 </mat-card-content>
@@ -155,8 +155,8 @@
        </mat-card-header>
 
           <mat-card-content style="display:none"  id="matcard{{i}}">     
-              <h4 [routerLink]="['/admin/user_details',row.from_user_id]" class="matcardcontenth4" *ngIf="row.subject=='NewUserRegister'"> {{row.from_user_name}} has been registered as a user.</h4>
-              <h4 [routerLink]="['/admin/pub_details',row.from_user_id]" class="matcardcontenth4" *ngIf="row.subject=='NewPublisherRegister'"> {{row.from_user_name}} has been registered as a publisher.</h4>
+              <h4 [routerLink]="['/admin/user_details',row.from_user_id]" class="matcardcontenth4" *ngIf="row.subject=='NewUserRegister'"> {{row.user_details?.name}} has been registered as a user.</h4>
+              <h4 [routerLink]="['/admin/pub_details',row.from_user_id]" class="matcardcontenth4" *ngIf="row.subject=='NewPublisherRegister'"> {{row.publisher_details?.name}} has been registered as a publisher.</h4>
             </mat-card-content>
       </mat-card>
 
@@ -178,7 +178,7 @@
        </mat-card-header>
 
           <mat-card-content style="display:none"  id="matcard{{i}}">     
-              <h4 class="matcardcontenth4"> {{row.from_user_name}} has made a payment of {{row.body}}/-.
+              <h4 class="matcardcontenth4"> {{row.user_details?.name}} has made a payment of {{row.body}}/-.
               
               </h4>
           </mat-card-content>

@@ -1,4 +1,5 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
+import { MatAccordion } from '@angular/material/expansion';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -21,14 +22,12 @@ import { NotificationserveService } from './notificationserve.service';
  ]
 })
 export class NotificationsComponent implements OnInit {
+  @ViewChild(MatAccordion) accordion!: MatAccordion;
   userData:any=[]; 
   substring:any='';
   category: any = [];
   loader:boolean=true;
   errormessage:any;
-  id:any;
-  user_type:any;
-  remembertoken:any;
   msg:any='published'
   row:boolean=true;
   check_response:any=''
@@ -55,10 +54,7 @@ export class NotificationsComponent implements OnInit {
 }
 
 public fetch_data() { 
-    this.id=localStorage.getItem('u-id');
-    this.user_type=localStorage.getItem('user-type_user');
-    this.remembertoken=localStorage.getItem('remember_token');
-    this.cats.getData(this.id,this.user_type,this.remembertoken).pipe(map(x => JSON.parse(x)),pluck("message")).subscribe((data:any) => {
+    this.cats.getData(localStorage.getItem('u-id'),localStorage.getItem('user-type_user'),localStorage.getItem('remember_token')).pipe(map(x => JSON.parse(x)),pluck("message")).subscribe((data:any) => {
       this.userData = data;
       this.loader=false;
         this.put_data(this.userData);
@@ -92,22 +88,22 @@ got_book_details_page(book_id:any,pub_id:any){
   this.router.navigate(['/user/bookdetails']);
 }
 
-expandMore(index:any){
-  if($('#matcard'+index).is(':visible')){
-    $('#date_'+index).fadeOut('slow');
-    $('#Date_'+index).fadeIn('slow');
-    $('#matcard'+index).slideUp("slow");
-  }
-  else{
-    $('#Date_'+index).fadeOut('slow');
-    $('#date_'+index).fadeIn('slow');
-    $('#matcard'+index).slideDown("slow");
-  }
+// expandMore(index:any){
+//   if($('#matcard'+index).is(':visible')){
+//     $('#date_'+index).fadeOut('slow');
+//     $('#Date_'+index).fadeIn('slow');
+//     $('#matcard'+index).slideUp("slow");
+//   }
+//   else{
+//     $('#Date_'+index).fadeOut('slow');
+//     $('#date_'+index).fadeIn('slow');
+//     $('#matcard'+index).slideDown("slow");
+//   }
   
-}
+// }
 clear_all_notification(flag:any,table_id:any,_index:any){
   this.loader=true;
-  this.cats.remove_notification(this.id,this.user_type,this.remembertoken,flag,table_id).subscribe(data=>{
+  this.cats.remove_notification(localStorage.getItem('u-id'),localStorage.getItem('user-type_user'),localStorage.getItem('remember_token'),flag,table_id).subscribe(data=>{
     this.check_response=data;
     if(this.check_response.success==1){
       this.loader=false

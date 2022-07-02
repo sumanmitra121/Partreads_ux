@@ -124,3 +124,6 @@ text-overflow: ellipsis;
 .inputfont{
   font-size:15px !important;
 }
+.btn:hover {
+  color: #fff!important;
+}

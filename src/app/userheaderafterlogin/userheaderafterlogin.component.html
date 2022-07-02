@@ -50,10 +50,14 @@
                 <div class="Notification" id="notification">
                   <div class="Notification-header"><h3>Notifications</h3></div>
                   <div *ngFor="let row of showNotification" style="cursor:pointer" [hidden]="!show_notif"  routerLink='/user/notifications' routerLinkActive="true">
-                  <div class="Notification-body" *ngIf="row.subject=='BookUpload'" ><img src="{{row.from_user_image}}"/><div class="NotificationContent"><h4>New book!</h4></div></div>
-                    <div class="Notification-body" *ngIf="row.subject=='BuyBookPayment'" ><img src="{{row.book_image}}"/><div class="NotificationContent"><h4>Transaction done!</h4></div></div>
-                    <div class="Notification-body" *ngIf="row.subject=='BuyBookPages'" ><img src="{{row.book_image}}"/><div class="NotificationContent"><h4>Pages bought successfully!</h4></div></div>
-                    <div class="Notification-body" *ngIf="row.subject=='LinkShare'"><img  src="{{row.book_image}}"/><div class="NotificationContent"><h4>New Link!</h4></div></div>
+                  <!-- <div class="Notification-body" *ngIf="row.subject=='BookUpload'" ><img src="{{row.from_user_image}}"/><div class="NotificationContent"><h4>New book!</h4></div></div> -->
+                    <!-- <div class="Notification-body" *ngIf="row.subject=='BuyBookPayment'" ><img src="{{row.book_image}}"/><div class="NotificationContent"><h4>Transaction done!</h4></div></div> -->
+                    <!-- <div class="Notification-body" *ngIf="row.subject=='BuyBookPages'" ><img src="{{row.book_image}}"/><div class="NotificationContent"><h4>Pages bought successfully!</h4></div></div> -->
+                    <!-- <div class="Notification-body" *ngIf="row.subject=='LinkShare'"><img  src="{{row.book_image}}"/><div class="NotificationContent"><h4>New Link!</h4></div></div> -->
+                    <div class="Notification-body" *ngIf="row.subject=='BookUpload'" ><img src="{{row.user_details.image_url}}"/><div class="NotificationContent"><h4>New book!</h4></div></div>
+                    <div class="Notification-body" *ngIf="row.subject=='BuyBookPayment'" ><img src="{{bk_url}}{{row.bookdetails.book_image}}"/><div class="NotificationContent"><h4>Transaction done!</h4></div></div>
+                    <div class="Notification-body" *ngIf="row.subject=='BuyBookPages'" ><img src="{{bk_url}}{{row.bookdetails.book_image}}"/><div class="NotificationContent"><h4>Pages bought successfully!</h4></div></div>
+                    <div class="Notification-body" *ngIf="row.subject=='LinkShare'"><img  src="{{bk_url}}{{row.bookdetails.book_image}}"/><div class="NotificationContent"><h4>New Link!</h4></div></div>
                   </div>
                   <div class="text-center" *ngIf="!show_notif"><div  class="loader" ></div></div>
                   <div class="Notification-footer" [hidden]="!show_notif"><button class="btn btn-block btn-primary" routerLink='/user/notifications' routerLinkActive="true">Show all</button></div>

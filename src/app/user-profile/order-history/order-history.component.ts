@@ -3,6 +3,7 @@ import { Form, NgForm } from '@angular/forms';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
+import { pluck } from 'rxjs/operators';
 import { UtilityTService } from 'src/app/Utility/utility-t.service';
 import { GetOrderHistoryService } from './get-order-history.service';
 declare var XLSX : any;
@@ -18,7 +19,6 @@ declare var XLSX : any;
   '../../../assets/cssfiles/apps_inner.css']
 })
 export class OrderHistoryComponent implements OnInit  {
-
   @ViewChild('logForm') LogForm!:NgForm;
   displayedColumns: any[] = ['No','orderId', 'bookname','authorname', 'TotalPurchasedPages','Amount','DateOfPurchase'];
   dataSource=new MatTableDataSource();
@@ -37,25 +37,25 @@ export class OrderHistoryComponent implements OnInit  {
     // this.loading=true;
     this.fetchdata();}
   fetchdata(){
-     this.orderHistory.getOrderHistory(localStorage.getItem('u-id'), localStorage.getItem('user-type_user'), localStorage.getItem('remember_token')).subscribe(data=>{
-    //  console.log(data)
+     this.orderHistory.getOrderHistory(localStorage.getItem('u-id'), localStorage.getItem('user-type_user'), localStorage.getItem('remember_token')).pipe(pluck('message')).subscribe(data=>{
       this.order_history=data;
-      this.order_history=this.order_history.message;
-      // console.log(this.order_history);
-      if(this.order_history.length > 0){
-      for(let i=0;i<this.order_history.length;i++){
-        this.base_dt.push({order_id:this.order_history[i].order_id,book_name:this.order_history[i].book_details.book_name
-        ,author_name:this.order_history[i].book_details.author_name,book_page_no:this.order_history[i].book_page_no,
-        total_price:this.order_history[i].total_price,date:this.order_history[i].date});
-      }         
-     }
-      this.putdata(this.base_dt);
+      this.putdata();
      })
   }
-  putdata(v:any){
-    this.dataSource=new MatTableDataSource(v);
+  putdata(){
+    this.dataSource=new MatTableDataSource(this.order_history);
     this.dataSource.paginator=this.paginator;
     this.dataSource.sort=this.sort;
+    //FOR SEARCH OF NESTED LEVEL IN ARRAY OF OBJECTS
+  this.dataSource.filterPredicate = (data:any, filter: string) => {
+    const accumulator = (currentTerm:any, key:any) => {
+      return this.nestedFilterCheck(currentTerm, data, key);
+    };
+    const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+    // Transform the filter by converting it to lowercase and removing whitespace.
+    const transformedFilter = filter.trim().toLowerCase();
+    return dataStr.indexOf(transformedFilter) !== -1;
+  }
     this.loading=false;
   }
   applyFilter(event: Event) {
@@ -73,19 +73,10 @@ export class OrderHistoryComponent implements OnInit  {
       }
      else{
          this.loading=true;
-         this.orderHistory.getOrderHistoryByDate(localStorage.getItem('u-id'), localStorage.getItem('user-type_user'),localStorage.getItem('remember_token'),this.LogForm.form.value.startDate,this.LogForm.form.value.endDate).subscribe(data=>{
-          this.base_dt.length=0;
+         this.orderHistory.getOrderHistoryByDate(localStorage.getItem('u-id'), localStorage.getItem('user-type_user'),localStorage.getItem('remember_token'),this.LogForm.form.value.startDate,this.LogForm.form.value.endDate).pipe(pluck('message')).subscribe(data=>{
           this.order_history.length=0;
            this.order_history=data;
-            this.order_history=this.order_history.message;
-            if(this.order_history.length > 0){
-              for(let i=0;i<this.order_history.length;i++){
-                this.base_dt.push({order_id:this.order_history[i].order_id,book_name:this.order_history[i].book_details.book_name
-                ,author_name:this.order_history[i].book_details.author_name,book_page_no:this.order_history[i].book_page_no,
-                total_price:this.order_history[i].total_price,date:this.order_history[i].date});
-              }         
-             }
-              this.putdata(this.base_dt);
+           this.putdata();
          })
      }
 
@@ -95,7 +86,8 @@ export class OrderHistoryComponent implements OnInit  {
   }
 
   importAsXlsx(){
-      if(this.base_dt.length > 0){
+    this.loading =true;
+      if(this.order_history.length > 0){
       let data=document.getElementById('data_table');
       var fp=XLSX.utils.table_to_book(data,{sheet:'Sheet1'});
       XLSX.write(fp,{
@@ -103,9 +95,22 @@ export class OrderHistoryComponent implements OnInit  {
         type:'base64'
       });
       XLSX.writeFile(fp,'Payment.xlsx');
+      this.loading =false;
     }
     else{
          this.utilyT.showToastr('No payment history available to download','E');
     }
+    }
+    nestedFilterCheck(search:any, data:any, key:any) {
+      if (typeof data[key] === 'object') {
+        for (const k in data[key]) {
+          if (data[key][k] !== null) {
+            search = this.nestedFilterCheck(search, data[key], k);
+          }
+        }
+      } else {
+        search += data[key];
+      }
+      return search;
     }
 }

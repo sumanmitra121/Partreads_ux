@@ -33,6 +33,7 @@ export class PublishernotificationComponent implements OnInit {
   userDataFilter:any=[];
   check_response:any='';
   ngOnInit(): void {
+    console.log("ASA")
     this.counter=0;
        this.fetch_notification();
       localStorage.setItem('address','/publisher/notification');

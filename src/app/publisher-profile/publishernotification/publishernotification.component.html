@@ -81,7 +81,7 @@
              
              
          
-               <div class="mainnotificationdiv" *ngIf="userDataFilter.message.length > 0">
+               <div class="mainnotificationdiv" *ngIf="userDataFilter.message?.length > 0">
                 <div *ngFor="let row of userDataFilter.message;let i=index">
                 
             
@@ -106,15 +106,15 @@
                          </mat-card-header>
             
                             <mat-card-content style="display:none"  id="matcard{{i}}">     
-                                <h4 class="matcardcontenth4" *ngIf="row.body=='Reject'">{{msg}} rejected {{row.book_name}}. <span [hidden]="row.reject_msg==undefined || row.reject_msg==''" class="text-danger">(Reason: {{row.reject_msg}}) </span> </h4>
-                                <h4 class="matcardcontenth4" *ngIf="row.body=='Approved'">{{msg}} approved {{row.book_name}}.</h4>
+                                <h4 class="matcardcontenth4" *ngIf="row.body=='Reject'">{{msg}} rejected {{row.bookdetails?.book_name}}. <span [hidden]="row.reject_msg==undefined || row.reject_msg==''" class="text-danger">(Reason: {{row.reject_msg}}) </span> </h4>
+                                <h4 class="matcardcontenth4" *ngIf="row.body=='Approved'">{{msg}} approved {{row.bookdetails?.book_name}}.</h4>
                             </mat-card-content>
                   </mat-card>
                 </div>
                 </div>
 
 
-               <div class="row mb-2 mt-2" *ngIf="userDataFilter.message.length  > 0">
+               <div class="row mb-2 mt-2" *ngIf="userDataFilter.message?.length > 0">
                 <div class="col-2">
                 </div>
                 <div class="col-6"></div>
@@ -125,7 +125,7 @@
                  </div>
                 </div>
               </div>
-               <div class="row" *ngIf="userDataFilter.message.length  == 0" class="mt-5">
+               <div class="row" *ngIf="userDataFilter.message?.length == 0" class="mt-5">
                  <div class="col-12 text-center">
                    <img src="/assets/images/trnnonotification.png" class="img-fluid" style="height:160px"/>
                         <h2 class="text-muted">no new notification</h2>

@@ -7,19 +7,14 @@
     <div class="col-sm-9 rightSideBarnewCus float-left">
       <div class="rightSection">
         <h1>My Cart</h1>
-        <div class="book_loadMain" *ngIf="loader">
-          <div class="loader loader-1">
-            <div class="loader-outter"></div>
-            <div class="loader-inner"></div>
-          </div>
-        </div>
+        <div id="cover-spin" *ngIf="loader"></div>
 
         <mat-form-field>
           <mat-label>Search</mat-label>
           <input
             matInput
             (keyup)="applyFilter($event)"
-            placeholder="Search by Book name, Price or ISBN"
+            placeholder="Search by Book name or ISBN"
             #input
           />
         </mat-form-field>
@@ -149,7 +144,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title text-danger h4 "   title="{{_bk_name}}">Delete {{this._bk_name | transform:15}}</h4>
-        <button type="button" class="close" data-dismiss="modal"  id="Cancel">
+        <button type="button" class="close" data-dismiss="modal" #Cancel>
           &times;
         </button>
       </div>
@@ -157,9 +152,9 @@
         <p class="p">Are you sure you want to delete the item from cart?</p>
       </div>
       <div class="modal-footer">
-        <button type="button" [disabled]="loader" class="btn btn-block button-yes" (click)="del()">
-          <ng-container *ngIf="!loader">Ok</ng-container>
-          <div *ngIf="loader" class="spinner-border text-light"></div>
+        <button type="button" [disabled]="loader" class="btn btn-block button-yes" (click)="del()">OK
+          <!-- <ng-container *ngIf="!loader">Ok</ng-container> -->
+          <!-- <div *ngIf="loader" class="spinner-border text-light"></div> -->
 
         </button>
       </div>

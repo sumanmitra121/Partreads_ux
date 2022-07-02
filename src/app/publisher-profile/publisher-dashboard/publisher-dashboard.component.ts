@@ -7,6 +7,7 @@ import { BooklistService } from 'src/app/booklist.service';
 import { pubid } from 'src/app/pubid';
 import { map } from 'rxjs/internal/operators/map';
 import { pluck } from 'rxjs/operators';
+import { PDFDocument } from 'pdf-lib';
 
 // import * as Chart from 'chart.js';
 //declare const myFunction: any;
@@ -200,7 +201,26 @@ export class PublisherDashboardComponent implements OnInit {
  getBooks(){
    var dt =new pubid(localStorage.getItem('pub-id'));
   this.booklistshow.getBooks(dt).pipe(map(x=>JSON.parse(x)),pluck('message')).subscribe(response => {
-             this.getAllBooks =response.filter((e:any) => e.uploadad_page_count!=e.total_page_count);
+
+            //  this.getAllBooks =response.filter((e:any) => e.uploadad_page_count!=e.total_page_count);
+            var dt = response;
+            dt.forEach((e:any) => {
+                //  console.log(e);
+                this.getPageCount(e);
+                 
+            })
   })
  }
+
+ async  getPageCount(_data: any){
+
+    const formPdfBytes = await fetch(_data.full_book_path).then((res) => res.arrayBuffer());
+    const pdfDoc = await PDFDocument.load(formPdfBytes);
+    const pageCount = pdfDoc.getPageCount();
+    if(pageCount != _data.uploadad_page_count){
+    this.getAllBooks.push(_data)
+    }
+
 }
+}
+
