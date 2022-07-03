@@ -151,28 +151,28 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
   // }
   // console.log(e);
 })
-    // window.onresize = function(){
-    //  if((window.outerHeight-window.innerHeight)>100)
-    //       if(localStorage.getItem('user-type_user')=='U'){
-    //         localStorage.removeItem('u-token');
-    //         localStorage.setItem('u-loggedin','false');
-    //         localStorage.removeItem('u-id');
-    //         localStorage.removeItem('user-type_user');
-    //         localStorage.removeItem('search-item');
-    //         document.cookie='';
-    //         window.location.href='https://partreads.com/#/';
+    window.onresize = function(){
+     if((window.outerHeight-window.innerHeight)>100)
+          if(localStorage.getItem('user-type_user')=='U'){
+            localStorage.removeItem('u-token');
+            localStorage.setItem('u-loggedin','false');
+            localStorage.removeItem('u-id');
+            localStorage.removeItem('user-type_user');
+            localStorage.removeItem('search-item');
+            document.cookie='';
+            window.location.href='https://partreads.com/#/';
 
-    //       }
-    //         else if(localStorage.getItem('user-type_user')=='A'){
-    //           localStorage.removeItem('token');
-    //            localStorage.removeItem('user-type_user');
-    //            localStorage.setItem('isLoggedIn', "false");
-    //            document.cookie='';
-    //            window.location.href='https://partreads.com/#/admin/login';
-    //           }
-    //            else{
-    //              window.location.reload();}
-    //       }
+          }
+            else if(localStorage.getItem('user-type_user')=='A'){
+              localStorage.removeItem('token');
+               localStorage.removeItem('user-type_user');
+               localStorage.setItem('isLoggedIn', "false");
+               document.cookie='';
+               window.location.href='https://partreads.com/#/admin/login';
+              }
+               else{
+                 window.location.reload();}
+          }
 
   </script>
   <!-- <script>
