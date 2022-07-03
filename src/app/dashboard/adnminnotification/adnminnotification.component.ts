@@ -47,7 +47,7 @@ export class AdnminnotificationComponent implements OnInit {
 }
 
 public fetch_data() {
-     this.userData.length=0;
+    //  this.userData.length=0;
     this.read.get_admin_notification(localStorage.getItem('token')).pipe(map(x => JSON.parse(x)),pluck('message')).subscribe(data => {
       // this.userData =JSON.parse(data);
       this.userData = data;
@@ -85,47 +85,17 @@ clear_all_notification(flag:any,table_id:any,_index:any){
     console.log(data);
     this.check_response=data;
     if(this.check_response.success==1){
-      // this.fetch_data();
-      this.loader=false;
-      _index!= '-1' ? this.userData.splice(_index,1) : this.userData.splice(0,this.userData.length);
+      // this.loader=false;
+      // _index!= '-1' ? this.userData.splice(_index,1) : this.userData.splice(0,this.userData.length);
       this.toastr.successToastr('Deletion successful','');
+      this.fetch_data();
     }
     else{
       this.loader=false;
       this.toastr.errorToastr('Deletion not possible,try again later','');
     }
   })
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

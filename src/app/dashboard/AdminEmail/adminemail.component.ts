@@ -56,7 +56,9 @@ export class adminemailComponent implements OnInit {
   _userType:any=[];
   _sentEmail!:FormGroup;
   publishers:Publishers[]=[];
+  _publisher_backup:Publishers[] =[]
   _users:user[]=[];
+  _search_user_backup:user[]=[];
   _userBackup:user[] = [];
   _submitEmail = new userEmail(localStorage.getItem('token'),'U');
   constructor(private fb:FormBuilder,private utilyT:UtilityTService,private user:DataService) { 
@@ -67,7 +69,8 @@ export class adminemailComponent implements OnInit {
       _flag:['U',Validators.required],
       _publishers:['',Validators.required],
       _headers:['',Validators.required],
-      _searchusers:['']
+      _searchusers:[''],
+      searchPub:['']
     }) 
   }
   get f(){return this._sentEmail.controls;}
@@ -113,6 +116,8 @@ export class adminemailComponent implements OnInit {
         this.form.resetForm();
         this.f._flag.patchValue(_flag);
         this.utilyT.showToastr('Mail sent successfully','S');
+       this.f._user.disable();
+
       }
     },
     error=>{
@@ -152,7 +157,8 @@ export class adminemailComponent implements OnInit {
   }
   getPublishers(){
      this.utilyT.getPublishers().then(publisher => {
-        this.publishers = publisher.filter((x:Publishers) => x.user_status == 'A');    
+        this.publishers = publisher.filter((x:Publishers) => x.user_status == 'A');   
+        this._publisher_backup = this.publishers; 
     })
   }
   getUserType(){
@@ -168,12 +174,51 @@ export class adminemailComponent implements OnInit {
   }
   onusertypeChange(event:any){
     this._users = event.value == '' ? this._userBackup : this._userBackup.filter(x => x.user_details.type == event.value);
+    this._search_user_backup = this._users;
     if(event.value == ''){
       this.f._user.disable();
     }
     else{
       this.f._user.enable();
     }
+  }
+  
+  //Event Fired When someone write something inside the Seearch Input box
+  onInputChange(event: any) {
+    event.stopPropagation();
+    const searchInput = event.target.value.toLowerCase();
+    switch(this.f._flag.value){
+      case "P":  
+                  this.publishers = this._publisher_backup.filter(({ user_name }) => {
+                    const  u_name = user_name.toLowerCase();
+                    return u_name.includes(searchInput);
+                  });
+                  console.log(this._submitEmail.publisher);
+                  
+                  this.f._publishers.patchValue(this._submitEmail.publisher);
+                  break;
+      case "U":  this._users = this._search_user_backup.filter(({ user_name }) => {
+                        const  u_name = user_name.toLowerCase();
+                        console.log(u_name);
+                        return u_name.includes(searchInput);
+                       })
+                 break;
+      default:break;
+    }
+
+   
+  }
+ //Event Fired When cross icon inside the material search input box will click
+  clearSearch(event:any) {
+    switch(this.f._flag.value){
+      case "P": this.f.searchPub.patchValue('');this.publishers =  this._publisher_backup;break;
+      case "U": this.f._searchusers.patchValue('');this._users =  this._search_user_backup;break;
+      default:break;
+    }
+  }
+ //Event Fired When Material option list is going to be closed
+  onCloseMethod(select:MatSelect){
+     this.clearSearch(select);
   }
 
 

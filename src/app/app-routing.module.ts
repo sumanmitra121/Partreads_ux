@@ -8,8 +8,6 @@ import { UsersComponent } from './dashboard/users/users.component';
 import { CategoryComponent } from './dashboard/category/category.component';
 import { SubcategoryComponent } from './dashboard/subcategory/subcategory.component';
 import { LoginComponent } from './login/login.component';
-import { CookieService } from 'ngx-cookie-service';
-import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { LoginGuard } from './login.guard';
 import { CreateCategoryComponent } from './dashboard/create-category/create-category.component';

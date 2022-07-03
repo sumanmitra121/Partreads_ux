@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { interval } from 'rxjs';
 import { PublisherLogoutServiceService } from '../publisher-logout-service.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -25,6 +25,7 @@ declare var $:any;
 ]
 })
 export class SiteHeaderComponent implements OnInit,OnDestroy{
+  @Output() outputFromChild : EventEmitter<string> = new EventEmitter();
   show_loader=true;
   searchData:any=[];
    searchKeyWord:any='name';
@@ -101,6 +102,7 @@ export class SiteHeaderComponent implements OnInit,OnDestroy{
       this.userdata=JSON.parse(data);  
       this.profile=this.userdata.message[0].image_url;
       this.Name=this.userdata.message[0].name;
+      this.outputFromChild.emit(this.Name)
       })
   }
  show(){showprofile();}

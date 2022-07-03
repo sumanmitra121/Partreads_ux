@@ -1,4 +1,4 @@
-<app-site-header></app-site-header>
+<app-site-header (outputFromChild) = "receiveChildData($event)"></app-site-header>
 <!-- <div class="breadcrumb">
 	<ul>
 		<li><a routerLinkActive="true" routerLink="/publisher/publisher-dashboard">Home</a></li>
@@ -263,11 +263,6 @@
 									*ngIf="cf.value==ct.value &&ct.value!='' " class="text-danger fs-5">*{{page_no_error}}</span>
 								</div>
 							<div class="col-sm-6 float-left fs-5">
-								<!-- <input type="text" class="form-control inputfont"
-									placeholder="Contents To(required)" #ct pattern="[0-9]*"
-									(keypress)="preventNonNumericalInput($event)" /><span @fadeSlideInOut
-									*ngIf="upload&&ct.value==''" class="text-danger fieldAleart">*Page No. is required</span> -->
-									<!-- (keypress)="preventNonNumericalInput($event)" -->
 									<mat-form-field appearance="outline">
 										<mat-label>Contents Page No. To</mat-label>
 										<input matInput type="text"  #ct pattern="[0-9]*"
@@ -667,14 +662,6 @@
 				  </mat-horizontal-stepper>
 				  <span @fadeSlideInOut class="text-danger text-center fieldAleart" [hidden]="progress_show">{{upload_message}}</span>
 				</div>
-				<!-- <div class="quotation">
-					<p>Notes *: Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-						Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when
-						an unknown printer took a galley of type and scrambled it to make a type specimen
-						book. when an unknown printer took a galley of type and scrambled it to make a type
-						specimen book.</p>
-				</div> -->
-
 				<!-- <br clear="all"> -->
 			</div>
 			<!-- <div class="col-sm-12"> -->
@@ -931,63 +918,6 @@
 				  
 				</mat-grid-list>
 
-
-		
-		   <!-- <h3 class="text-center">Book Details</h3>
-		   <div class="row">
-			   <div class="col-sm-6">
-				<h5 class="previewDetails">Book Name :   {{bkname.value}}</h5>
-			   </div>
-			   <div class="col-sm-6">
-				<h5 class="previewDetails float-right">Author Name :   {{authname.value}} </h5>
-			   </div>
-
-		   </div>
-		   <div class="row">
-			   <div class="col-sm-6">
-				<h5 class="previewDetails">Publisher Name :   {{nm.value}} </h5>
-			   </div>
-			   <div class="col-sm-6">
-				<h5 class="previewDetails float-right">Isbn No :   {{isbn.value}} </h5>
-			   </div>
-
-		   </div>
-			<div class="row">
-				<div class="col-sm-6">
-					<h5 class="previewDetails">Publication Date: {{pub_year.value}}</h5>
-				</div>
-				<div class="col-sm-6">
-					<h5 class="previewDetails float-right">Edition : {{edition.value}}</h5>
-				</div>
-
-			</div>
-		  <hr/>
-		  <h3 class="text-center">Book Details</h3>
-					<h5 class="previewDetails">Category : <ul  class="fruits"><li class="fruit on" *ngFor="let cat of cate_gories"> {{cat.itemName}}</li></ul></h5>
-			        <h5 class="previewDetails">Sub Category : <ul  class="fruits"><li class="fruit on" *ngFor="let subcat of subcate_gories"> {{subcat.itemName}}</li></ul></h5>
-			<hr/>
-		    <h3 class="text-center">Pages</h3>
-			<div class="row">
-				<div class="col-6"><h5 class="previewDetails">Contents Page No From : {{cf.value}}</h5></div>
-				<div class="col-6">	<h5 class="previewDetails float-right">Contents Page No To : {{ct.value}}</h5></div>
-			</div>
-			<div class="row mt-3">
-           <div class="col-6">
-			<h5  class="previewDetails ">Preview Pages : {{rdf.value}}</h5>
-		   </div>
-		   <div class="col-6">
-			<h5 class="previewDetails float-right">Page Count Start From : {{rdt.value}}</h5>
-
-		   </div>
-			</div>
-			<hr/>
-			<h3 class="text-center">Price</h3>
-			<h5 class="previewDetails">Per Page Credits: {{price.value}}</h5>
-			<h5 class="previewDetails">Full E-book price : {{full_book_price.value}}</h5>
-			<hr/>
-			<h3 class="text-center">About Book & Author</h3>
-			<h5 class="previewDetails">About Author : {{authabout.value}}</h5>
-			<h5 class="previewDetails">About Book : {{bookabout.value}}</h5> -->
 
 			</div>
 			

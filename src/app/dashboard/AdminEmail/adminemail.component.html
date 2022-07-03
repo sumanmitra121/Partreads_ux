@@ -27,7 +27,7 @@
                     <mat-form-field appearance="outline">
                       <mat-label>Choose an option</mat-label>
                       <mat-select formControlName="_user_type" [(ngModel)]="_submitEmail.user_type" (selectionChange)="onusertypeChange($event)">
-                      <mat-option value="">Select</mat-option>
+                      <mat-option value="">--Select User type--</mat-option>
                       <mat-option *ngFor="let userType of _userType" value="{{userType._id}}" >{{userType.name}}</mat-option>
                      </mat-select>
                    </mat-form-field>
@@ -35,14 +35,26 @@
                    <div class="col-6">
                     <mat-form-field appearance="outline">
                       <mat-label>Select Users</mat-label>
-                      <mat-select formControlName="_user" [(ngModel)]="_submitEmail.user" multiple #select>
+                      <mat-select (closed)="onCloseMethod(select)" formControlName="_user" [(ngModel)]="_submitEmail.user" multiple #select>
                         <mat-select-trigger>
                           {{f._user.value?.length > 0 ? f._user.value[0].name : ''}}
                           <span *ngIf="f._user.value?.length > 1" class="additional-selection">
                             (+{{f._user.value.length - 1}} {{f._user.value?.length === 3 ? 'other' : 'others'}})
                           </span>
                         </mat-select-trigger>
-                        <mat-checkbox (change)="selAll($event)"  color="primary" [checked]="f._user.value?.length == _users.length">Select All Users</mat-checkbox>
+                        <mat-optgroup >
+                          <mat-form-field style="width:100%;">
+                           <input  #multiSearch formControlName="_searchusers" type="text" autocomplete="off" matInput placeholder="Search By User Name" (keydown)="onInputChange($event)"/>
+                           <button [disableRipple]="true" *ngIf="multiSearch.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch($event)">
+                           <mat-icon >close</mat-icon>
+                         </button>
+                                </mat-form-field>
+                           </mat-optgroup>
+                           <mat-optgroup *ngIf="_users.length == 0">
+                             <h4 class="text-left"><strong>No results found!</strong></h4>
+                           </mat-optgroup>
+
+                        <mat-checkbox *ngIf="multiSearch.value == ''" (change)="selAll($event)"  color="primary" [checked]="f._user.value?.length == _users.length">Select All Users</mat-checkbox>
                       <mat-option *ngFor="let _user of _users" [value]="_user.user_details">{{_user.user_details.name}}</mat-option>
                      </mat-select>
                    </mat-form-field>
@@ -53,16 +65,26 @@
                      <div class="col-12">
                       <mat-form-field  appearance="outline">
                         <mat-label>Select Publishers</mat-label>
-                      <mat-select formControlName="_publishers" multiple [(ngModel)]="_submitEmail.publisher" #select_pub>
+                      <mat-select (closed)="onCloseMethod(select)"   formControlName="_publishers" multiple [(ngModel)]="_submitEmail.publisher" #select_pub>
                         <mat-select-trigger>
                           {{f._publishers.value?.length > 0 ? f._publishers.value[0].user_name : ''}}
                           <span *ngIf="f._publishers.value?.length > 1" class="additional-selection">
                             (+{{f._publishers.value.length - 1}} {{f._publishers.value?.length === 3 ? 'other' : 'others'}})
                           </span>
                         </mat-select-trigger>
-                        <mat-checkbox (change)="selAll($event)"  color="primary" [checked]="f._publishers.value?.length == publishers.length">Select All Publishers</mat-checkbox>
-
-                        <mat-option *ngFor="let pub of publishers" [value]="pub">{{pub.user_name}}</mat-option>
+                         <mat-optgroup >
+                         <mat-form-field style="width:100%;">
+                          <input  #multiUserSearch formControlName="searchPub" type="text" autocomplete="off" matInput placeholder="Search By Publisher Name" (keydown)="onInputChange($event)"/>
+                          <button [disableRipple]="true" *ngIf="multiUserSearch.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch($event)">
+                          <mat-icon >close</mat-icon>
+                        </button>
+                               </mat-form-field>
+                          </mat-optgroup>
+                          <mat-optgroup *ngIf="publishers.length == 0">
+                            <h4 class="text-left"><strong>No results found!</strong></h4>
+                          </mat-optgroup>
+                        <mat-checkbox  *ngIf="multiUserSearch.value==''" (change)="selAll($event)"  color="primary" [checked]="f._publishers.value?.length == publishers.length">Select All Publishers</mat-checkbox>
+                        <mat-option *ngFor="let pub of publishers " [value]="pub">{{pub.user_name}}</mat-option>
                       </mat-select>
                     </mat-form-field>
                      </div>
@@ -75,7 +97,6 @@
                          placeholder="Email Header">
                 </mat-form-field>
               </div>
-               <mat-divider *ngIf="f._flag.value == 'P'"></mat-divider>
                <div class="col-12 mt-4">
                 <angular-editor formControlName="_bodyText"  [(ngModel)]="_submitEmail.email_body" [config]="config"></angular-editor>
                </div>
