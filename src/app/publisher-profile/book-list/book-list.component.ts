@@ -64,8 +64,9 @@ export class BookListComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.category);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.loader = this.dataSource.data.length > 0 ? false: true;
-    console.log(this.dataSource.data.length);
+    this.loader = this.dataSource.data.length > 0 ? false:true;
+    this.loader = false;
+    console.log(this.loader);
     
  }
   ngOnInit(): void {
@@ -167,18 +168,14 @@ export class BookListComponent implements OnInit {
   }
 
   async  getPageCount(allbooks: any){
-    console.log(allbooks);
-    
     for(let i=0;i<allbooks.length;i++)
     {
       const formPdfBytes = await fetch(allbooks[i].full_book_path).then((res) => res.arrayBuffer());
       const pdfDoc = await PDFDocument.load(formPdfBytes);
       const pageCount = pdfDoc.getPageCount();
-      // this.userdata.message[i].total_pages=pageCount;
       this.category[i]=allbooks[i];
       this.category[i].total_page_count = pageCount;
     }
-    // console.log(this.category)
       this.inddatasource();
   }
 

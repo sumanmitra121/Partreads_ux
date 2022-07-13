@@ -93,6 +93,7 @@
           <td mat-cell *matCellDef="let row,let i = index">
             <a style="cursor:pointer;" class="iconLink" (click)="edit_bk(row._id,row.book_id,row.active_book)">	<mat-icon>remove_red_eye</mat-icon></a> 
             <a *ngIf="row.total_page_count != row.uploadad_page_count" style="cursor: pointer;" class="iconLink" (click)="deleteBook(row.book_id,row.publisher_id,row.uploadad_page_count,i)"><mat-icon class="text-danger">delete</mat-icon></a>
+            <!-- <a  style="cursor: pointer;" class="iconLink" (click)="deleteBook(row.book_id,row.publisher_id,row.uploadad_page_count,i)"><mat-icon class="text-danger">delete</mat-icon></a> -->
            
             <!-- <a *ngIf="row.total_page_count != row.uploadad_page_count" style="cursor: pointer;" class="iconLink" (click)="deleteBook(row.book_id,row.publisher_id,i)"><mat-icon class="text-danger">delete</mat-icon></a> -->
           </td>
