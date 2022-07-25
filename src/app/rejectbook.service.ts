@@ -5,7 +5,6 @@ import { GlobalConstants } from './globalvar/global';
   providedIn: 'root'
 })
 export class RejectbookService {
-  //url="http://ec2-65-1-39-181.ap-south-1.compute.amazonaws.com/testlrvlaws/api/admin/rejectbook";
   url=GlobalConstants.apiURL+'/api/admin/rejectbook';
   constructor(private http:HttpClient) { }
   rejectbooks(v1:any,v2:any,v3:any){

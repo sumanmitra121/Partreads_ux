@@ -7,7 +7,6 @@ import { GlobalConstants } from './globalvar/global';
 })
 export class PublishercategoryshowService {
   url=GlobalConstants.apiURL+'/api/publisher/showcategory';
-  //url='http://ec2-65-1-39-181.ap-south-1.compute.amazonaws.com/testlrvlaws/api/publisher/showcategory';
   constructor(private http:HttpClient) { }
   getData(){
     return this.http.get(this.url);

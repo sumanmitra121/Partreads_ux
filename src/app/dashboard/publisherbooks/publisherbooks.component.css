@@ -8,7 +8,7 @@ table {
   }
   
   td, th {
-    width: 12%;
+    width: 9%;
   }
     /*For Admin All Books spinner*/
     .spinner-border{
@@ -70,3 +70,5 @@ table {
   mat-form-field{width:100%;font-size: 15px;}
 ::ng-deep .cdk-overlay-container {z-index: 9000!important;}
 .spinner-border{width: 20px!important;height: 20px!important;}
+
+.iconStyle{cursor:pointer}

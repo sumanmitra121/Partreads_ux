@@ -6,7 +6,6 @@ import { GlobalConstants } from 'src/app/globalvar/global';
   providedIn: 'root'
 })
 export class UregService {
-//url="http://ec2-65-1-39-181.ap-south-1.compute.amazonaws.com/testlrvlaws/api/user/register";
   url=GlobalConstants.apiURL+'/api/user/register';
   couponacheckurl=GlobalConstants.apiURL+'/api/user/registerapplycoupon';
   url_otp_user_profile=GlobalConstants.apiURL+'/api/user/verifyphoneemail';

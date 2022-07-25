@@ -269,6 +269,9 @@ export class UserheaderafterloginComponent implements OnInit, OnDestroy{
       else if(res==2){
          this.resetForm('Coupon code has already been used');
       }
+      else if(res==3){
+        this.resetForm('Book already been purchased');
+      }
       else{
         this.resetForm('Invalid coupon code');
       }

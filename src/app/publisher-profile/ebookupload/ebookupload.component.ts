@@ -16,6 +16,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import { ToastrManager } from 'ng6-toastr-notifications';
 
+
 // declare var $: any;
 declare var tools: any;
 declare var showprofile: any;
@@ -161,7 +162,7 @@ export class EbookuploadComponent implements OnInit {
   keyword:any;
   subput:any;
   fake:any;
-  page_no_error:string="please provide valid number('from' page no. should be less then 'to' page no.";
+  page_no_error:string="";
   page:boolean=true;
   userdata:any;
   pub_name:any;
@@ -292,6 +293,18 @@ export class EbookuploadComponent implements OnInit {
     this.loader=true;
     },error=>{
       this.loader=true;
+    })
+  }
+
+  ngAfterViewInit(){
+    this.firstFormGroup.get('c_to')?.valueChanges.subscribe((res) =>{
+      // console.log(this.g.c_from.value);
+      if(Number(this.g.c_from.value) > Number(this.g.c_to.value)){
+        this.page_no_error="please provide valid number('from' page no. should be less then 'to' page no.";
+      }
+      else{
+        this.page_no_error="";
+      }
     })
   }
 // For Multiselect dropdown
@@ -959,17 +972,19 @@ addHyp(e:any){
   }
 }
 checkContentRandomPages(str:any,_c_from:any,_c_to:any,_flag:any):boolean{
+  console.log(typeof(_c_from),typeof(_c_to));
+  
   if(_flag  == 'PP'){   
     const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
     const c_from = str.split(specialChars);
-    const found = c_from.find((e: string) =>{
-        console.log(e)
-      return e <= _c_from || e <= _c_to 
+    const found = c_from.find((e: number) =>{
+        console.log(typeof(e))
+      return Number(e) <= Number(_c_from) || Number(e) <= Number(_c_to)
     })
     return found == undefined ? false : true;
   }
   else{
-    return str <= _c_to || str <= _c_from ? true : false ;
+    return Number(str) <= Number(_c_to) || Number(str) <= Number(_c_from) ? true : false ;
   }
 }
 receiveChildData(data: any){

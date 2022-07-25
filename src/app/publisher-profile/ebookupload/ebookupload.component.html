@@ -257,8 +257,7 @@
 								  <span @fadeSlideInOut
 									*ngIf="upload&&cf.value==''" class="text-danger fs-5">*Page No. is required</span>
 								
-									<span @fadeSlideInOut
-									*ngIf="cf.value>ct.value" class="text-danger fs-5">*{{page_no_error}}</span>
+									
 									<span @fadeSlideInOut
 									*ngIf="cf.value==ct.value &&ct.value!='' " class="text-danger fs-5">*{{page_no_error}}</span>
 								</div>
@@ -268,10 +267,15 @@
 										<input matInput type="text"  #ct pattern="[0-9]*"
 										(keypress)="preventNonNumericalInput($event)"
 										formControlName="c_to" required
-										
 										>
 									  </mat-form-field>
-								
+									  <!-- <div class="invalid-feedback" *ngIf="g.errors?.C_TO">
+										<sup>*</sup>
+									  </div> -->
+									  
+									  <span @fadeSlideInOut
+									*ngIf="page_no_error!=''" class="text-danger fs-5">*{{page_no_error}}</span>
+									
 								</div>
 							   </div>
 						<!-- Preview Pages& PageCountStart -->

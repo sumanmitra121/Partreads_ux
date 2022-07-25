@@ -1,6 +1,6 @@
 {
     "/api/*":{
-        "target":"https://partreads.com/testlrvlaws/*",
+        "target":"https://partreads.com/partreadsapi/*",
         "secure":false,
         "loglevel":"debug"
     }

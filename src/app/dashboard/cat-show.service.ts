@@ -9,7 +9,6 @@ import { retry, catchError, timeout } from 'rxjs/operators';
 })
 export class CatShowService {
 
-  //url='http://ec2-65-1-39-181.ap-south-1.compute.amazonaws.com/testlrvlaws/api/admin/categoryshow';
   url=GlobalConstants.apiURL+'/api/admin/categoryshow';
   constructor(private http:HttpClient) { }
   getData(){

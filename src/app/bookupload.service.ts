@@ -12,9 +12,6 @@ url=GlobalConstants.apiURL+'/api/publisher/uploadbook';
 cat:any={};
 subcat:any={};
 table_of_content:any={};
-//  url="http://ec2-65-1-39-181.ap-south-1.compute.amazonaws.com/testlrvlaws/api/publisher/uploadbook";
- //url="http://localhost/testlrvlaws/api/publisher/uploadbook";
-//url="http://ec2-65-1-39-181.ap-south-1.compute.amazonaws.com/testlrvlaws/api/fileupload";
  constructor(private http:HttpClient) { }
   upload(b:Book,random_pages:any,category:any[],subcategory:any[],full_book_price:any,pub_year:any,edition:any,otherContents:any[],d_charge:any,mrp:any,offerprice:any):Observable<any> {
     console.log("Book_image_name:" +b.book_image.name);

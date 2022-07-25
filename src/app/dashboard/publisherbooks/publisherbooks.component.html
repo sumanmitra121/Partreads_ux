@@ -86,62 +86,38 @@
                             <div *ngIf="row.show_book=='R'; then ifblock"></div>
                             <div *ngIf="row.show_book=='Y';then yblock"></div>
                             <div *ngIf="row.show_book=='N' ;then nblock"></div>
-                            <!-- <div *ngIf="(row.show_book=='R' || row.show_book=='N' || row.show_book=='Y') && (row.uploaded_page!=row.total_book_page); then dblock"></div> -->
 
 
                             <ng-template #ifblock>
                                 <td id="active{{row._id}}">
                                     <div  style="display:inline-block;">
-                                    <!-- <a  data-toggle="modal" data-target="#approval_bk" class="approvBtn" (click)="approve_book(row._id,row.show_book)">Approve</a>
-                                    <a data-toggle="modal" data-target="#reject_bk" title="Edit" class="rejectBtn" (click)="reject_book(row._id,row.show_book)">Reject</a> -->
-                                    <a><mat-icon class="text-danger m-3" matTooltip="{{row.book_name}} has not been uploaded correctly"
-                                      matTooltipClass="example-tooltip-red " *ngIf="row.uploaded_pages!=row.total_pages">report_problem</mat-icon></a>
-                                    <a  class="approvBtn" *ngIf="row.uploaded_pages==row.total_pages" (click)="approve_book(row._id,row.show_book)">Approve</a>
-                                    <a  class="rejectBtn" (click)="reject_book(row._id,row.show_book)">Reject</a>
+                                   
+                                    <mat-icon class="text-danger " matTooltip="{{row.book_name}} has not been uploaded correctly"
+                                      matTooltipClass="example-tooltip-red " *ngIf="row.uploaded_pages!=row.total_pages">report_problem</mat-icon>
+                                    <a   *ngIf="row.uploaded_pages==row.total_pages" (click)="approve_book(row._id,row.show_book)">
+                                      <!-- Approve -->
+                                      <mat-icon class="iconStyle bg-success text-white m-2">check</mat-icon>
+                                    </a>
+                                    <a (click)="reject_book(row._id,row.show_book)">
+                                      <mat-icon class="iconStyle bg-danger text-white m-2">close</mat-icon>
+                                    </a>
                                     
                                     </div>
                                   </td>
                               </ng-template>
                               <ng-template #yblock>
-                                <td id="active{{row._id}}">Approved
+                                <td id="active{{row._id}}">
+                                  <mat-icon class="text-success" matTooltip="Approved">check</mat-icon>
                                   </td>
                               </ng-template>
                               <ng-template #nblock>
-                                <td id="active{{row._id}}">Rejected
+                                <td id="active{{row._id}}">
+                                  <!-- Rejected -->
+                                  <mat-icon class="text-danger"  matTooltip="Rejected">close</mat-icon>
+
                                   </td>
                               </ng-template>
-                             <!-- <ng-template #dblock>
-                                <td id="active{{row._id}}">
-                                  <a (click)="openModal()">	<mat-icon>delete</mat-icon></a>
-
-                                </td>
-                              </ng-template> -->
-
-
-
-                               <!-- <div *ngIf=" row.uploaded_pages==row.total_pages">
-                                 <div *ngIf="row.show_book=='R'">
-                                  <td id="active{{row._id}}">
-                                    <div  style="display:inline-block;">
-                                    <a  data-toggle="modal" data-target="#approval_bk" class="approvBtn" (click)="approve_book(row._id,row.show_book)">Approve</a>
-                                    <a data-toggle="modal" data-target="#reject_bk" title="Edit" class="rejectBtn" (click)="reject_book(row._id,row.show_book)">Reject</a>
-                                    </div>
-                                  </td>
-                                 </div>
-                                 <div *ngIf="row.show_book=='Y'">
-                                  <td id="active{{row._id}}">Approved
-                                  </td>
-                                 </div>
-                                 <div *ngIf="row.show_book=='N'">
-                                  <td id="active{{row._id}}">Rejected
-                                  </td>
-                                 </div>
-                                </div>
-                                <div *ngIf=" row.uploaded_pages!=row.total_pages">
-                                  <td id="active{{row._id}}">
-                                    <a (click)="openModal(row.book_name)" style="cursor:pointer">	<mat-icon>delete</mat-icon></a>
-                                 </td>
-                                </div> -->
+                    
 
                             </td>
                       </ng-container>

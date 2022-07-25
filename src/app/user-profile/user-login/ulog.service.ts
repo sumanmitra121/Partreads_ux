@@ -5,7 +5,6 @@ import { GlobalConstants } from 'src/app/globalvar/global';
   providedIn: 'root'
 })
 export class UlogService {
-  //url="http://ec2-65-1-39-181.ap-south-1.compute.amazonaws.com/testlrvlaws/api/user/login";
   url=GlobalConstants.apiURL+'/api/user/login';
   constructor(private http:HttpClient) { }
   login_user(v1:any,v2:any,v3:any)

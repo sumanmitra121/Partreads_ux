@@ -7,7 +7,6 @@ import { throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class SubcatshowService {
-  //url='http://ec2-65-1-39-181.ap-south-1.compute.amazonaws.com/testlrvlaws/api/admin/subcategoryshow';
   url=GlobalConstants.apiURL+'/api/admin/subcategoryshow';
   constructor(private http:HttpClient) {}
   show_sub()

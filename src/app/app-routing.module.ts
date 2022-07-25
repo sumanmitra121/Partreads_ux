@@ -478,10 +478,6 @@ const routes: Routes = [
     path:'unsubscribe/:email',
     component:UnSubscribeComponent
   },
-  // {
-  //   path:'testlrvlaws/public/merge/:pdf',
-  //   redirectTo:'/404'
-  // },
   {
     path: '404',
     component: ErrorPageComponent

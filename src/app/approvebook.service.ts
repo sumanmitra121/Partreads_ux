@@ -6,7 +6,6 @@ import { GlobalConstants } from './globalvar/global';
 })
 export class ApprovebookService {
 url=GlobalConstants.apiURL+'/api/admin/approvedbook';
-  //url="http://ec2-65-1-39-181.ap-south-1.compute.amazonaws.com/testlrvlaws/api/admin/approvedbook";
   constructor(private http:HttpClient) { }
   approvebooks(v1:any,v2:any){
     const formdata=new FormData()

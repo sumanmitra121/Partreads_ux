@@ -8,7 +8,6 @@ import { GlobalConstants } from './globalvar/global';
 })
 export class PublisherLoginService {
  url=GlobalConstants.apiURL+'/api/publisher/login';
-  //url='http://ec2-65-1-39-181.ap-south-1.compute.amazonaws.com/testlrvlaws/api/publisher/login';
   constructor(private http:HttpClient) {}
    login_pub(pub:publog){
       return this.http.post(this.url,pub)

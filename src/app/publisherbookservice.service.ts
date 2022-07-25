@@ -7,7 +7,6 @@ import { throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class PublisherbookserviceService {
- //url="http://ec2-65-1-39-181.ap-south-1.compute.amazonaws.com/testlrvlaws/api/admin/allbooks";
  url=GlobalConstants.apiURL+'/api/admin/allbooks';
  constructor(private http:HttpClient) { }
   getBooks(){

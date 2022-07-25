@@ -8,14 +8,10 @@ import { GlobalConstants } from './globalvar/global';
 export class PublishersubcategoryshowService {
  url=GlobalConstants.apiURL+'/api/publisher/showsubcategory';
  category_id:any={};
-  //url='http://ec2-65-1-39-181.ap-south-1.compute.amazonaws.com/testlrvlaws/api/publisher/showsubcategory';
   constructor(private http:HttpClient) { }
   getData(v:pubsubCat){
     return this.http.post(this.url,v);
   }
-  // getData(v:any[]){
-  //   return this.http.post(this.url,v);
-  // }
   getSubCategory(v:any[]){
       const formData=new FormData();
       this.category_id={};

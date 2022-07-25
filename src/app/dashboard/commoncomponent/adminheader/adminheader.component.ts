@@ -81,7 +81,7 @@ export class AdminheaderComponent implements OnInit,OnDestroy {
     this.inpt_pass=document.getElementById("pss");
     this.inpt_con=document.getElementById("con_pss");
     this.input_old_pass=document.getElementById('old_pss')
-    this.profile="https://partreads.com/testlrvlaws/public/admin.png"
+    this.profile="https://partreads.com/partreadsapi/public/admin.png"
     this.admin=interval(15000).subscribe(val =>{
       this.notifyadmin.get_notification_Count(localStorage.getItem('token')).subscribe(data=>{
         console.log(data);

@@ -7,7 +7,6 @@ import { GlobalConstants } from './globalvar/global';
 })
 export class UpdatecatService {
  url=GlobalConstants.apiURL+'/api/admin/categoryshowUpadte';
-  //url='http://ec2-65-1-39-181.ap-south-1.compute.amazonaws.com/testlrvlaws/api/admin/categoryshowUpadte'
   constructor(private http:HttpClient) { }
   update_cat(v:IupCat){
     return this.http.post(this.url,v);

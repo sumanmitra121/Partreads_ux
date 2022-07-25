@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  book_url:'https://partreads.com/testlrvlaws/public/book-images/',
+  // book_url:'https://partreads.com/testlrvlaws/public/book-images/',
+  book_url:'https://partreads.com/partreadsapi/public/book-images/',
+
 };
 
 /*

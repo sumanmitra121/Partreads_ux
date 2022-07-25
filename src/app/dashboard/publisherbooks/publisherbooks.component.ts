@@ -9,12 +9,13 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { ToastrManager } from 'ng6-toastr-notifications';
-import { PDFDocument } from 'pdf-lib';
+import { PDFDocument, PDFJavaScript } from 'pdf-lib';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+import { pdfjsVersion } from 'ngx-extended-pdf-viewer';
 declare var $:any;
 @Component({
   selector: 'app-publisherbooks',
@@ -75,19 +76,23 @@ export class PublisherbooksComponent implements OnInit {
     // console.log(v1+" "+v2);
     this.appbook.approvebooks(this.id_for_approve,this.show_bk_for_approve).subscribe(data=>{
       // console.log(data)
-      this.userdata1=data;
-      var obj =JSON.parse(this.userdata1);
-       this.totaldata=obj.message;
-      //  console.log(this.totaldata)
-      for(let i=0;i<this.totaldata.length;i++)
-      {
-        this.category[i]=this.totaldata[i];
-      }
+      // this.userdata1=data;
+      // var obj =JSON.parse(this.userdata1);
+      //  this.totaldata=obj.message;
+      // //  console.log(this.totaldata)
+      // for(let i=0;i<this.totaldata.length;i++)
+      // {
+      //   this.category[i]=this.totaldata[i];
+      // }
+        
       this.show_checkmark=true;
       $('#id01').fadeOut('slow');
       this.modal_type='';
+      var Index = this.category.findIndex((x:any) => x._id == this.id_for_approve)
+      this.category[Index].show_book= this.show_bk_for_rejection == 'Y' ? 'N' : 'Y';
+      this.dataSource =new MatTableDataSource(this.category);
       this.toastr.successToastr('Success','Book approved!')
-      this.fetch_data();
+      // this.fetch_data();
     },
     error=>{
     this.show_checkmark=true;
@@ -101,36 +106,32 @@ export class PublisherbooksComponent implements OnInit {
     this.id_for_rejection=v1;
     this.show_bk_for_rejection=v2;
     $('#id01').fadeIn('slow');
-
   }
   reject(reject_msg:any){
-    // alert(reject_msg);
-    // this.loading=true;
-    this.show_checkmark=true;
-    // console.log(v1+" "+v2);
-    this.rejbook.rejectbooks(this.id_for_rejection,this.show_bk_for_rejection,reject_msg).subscribe(data=>{
-      // console.log(data)
-      this.userdata1=data;
-      // console.log(this.userdata1)
-      var obj =JSON.parse(this.userdata1);
-       this.totaldata=obj.message;
-      for(let i=0;i<this.totaldata.length;i++)
-      {
-        this.category[i]=this.totaldata[i];
-      }
+    console.log(this.modal_type);  
       this.show_checkmark=true;
-      $('#id01').fadeOut('slow');
-      this.modal_type='';
-      this.toastr.successToastr('Success','Book rejected!');
-      this.fetch_data();
-    
-    },
-    error=>{
-    this.show_checkmark=true;
-    this.toastr.errorToastr('Error','Book rejection failed!')
-    })
-      // location.reload();
-    
+      this.rejbook.rejectbooks(this.id_for_rejection, this.show_bk_for_rejection,reject_msg).subscribe(data=>{
+        // this.userdata1=data;
+        // var obj =JSON.parse(this.userdata1);
+        // this.totaldata=obj.message;
+        // for(let i=0;i<this.totaldata.length;i++)
+        // {
+        //   this.category[i]=this.totaldata[i];
+        // }
+      
+        this.show_checkmark=true;
+        $('#id01').fadeOut('slow');
+        this.modal_type='';
+        var Index = this.category.findIndex((x:any) => x._id == this.id_for_rejection)
+        this.category[Index].show_book= this.show_bk_for_rejection == 'Y' ? 'N' : 'Y';
+        this.dataSource =new MatTableDataSource(this.category);
+        this.toastr.successToastr('Success','Book rejected!');
+        // this.fetch_data();
+      },
+      error=>{
+      this.show_checkmark=true;
+      this.toastr.errorToastr('Error','Book rejection failed!')
+      })
   }
   // logout()
   // {
@@ -138,7 +139,7 @@ export class PublisherbooksComponent implements OnInit {
   //   this.cookieService.delete('cookie-name');
   //   this.router.navigate(['/admin/login']);
   // }
-  /*angular Material*/
+  /*angular Material*/  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -152,20 +153,7 @@ export class PublisherbooksComponent implements OnInit {
     this.category.length=0;
     this.pubbookserve.getBooks().subscribe(data=>{// console.log(data);
       this.userdata=data;
-      // this.loading=false;
       this.getPageCount(this.userdata.message)
-    //  for(let i=0;i<this.userdata.message.length;i++)
-    //   {
-      
-    //     this.pageCount=this.getPageCount(this.userdata.message[i].full_book_path);
-    //     this.userdata.message[i].total_pages=JSON.stringify(this.pageCount);
-    //     this.category[i]=this.userdata.message[i];
-
-    //     console.log(this.category[i]);
-    //   }
-      // this.getPageCount(this.category[0].full_book_path);
-      // this.put_data();
-
       },(errorMessage) => {  
       this.loading=false;
         this.substring = errorMessage.substr(0, 3);

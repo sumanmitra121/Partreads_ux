@@ -489,17 +489,16 @@ export class PurchaseListComponent implements OnInit {
           )
           .subscribe(
             (data) => {
+               console.log(data)
               this.pdfBytes = "";
               this.open_pg = "";
               var obj = JSON.parse(data);
               this.full_book = obj.full_book;
               this.Full_Book = obj.mergepdf;
-              // localStorage.setItem("_mergePdf",this.Full_Book);
-              // console.log("PdfArray:" + localStorage.getItem("_mergePdf"));
               this.modifyPdf(this.Full_Book);
               var j = 0;
               for (let i = 0; i < obj.message.length; i++) {
-                if (typeof obj.message[i].book_page_no == "string") {
+                if (obj.message[i].book_page_no.includes("_")) {
                 } else {
                   this.pageread[j] = obj.message[i];
                   this.pages[j]= obj.message[i].book_page_no;
