@@ -89,7 +89,7 @@ export class PublisherbooksComponent implements OnInit {
       $('#id01').fadeOut('slow');
       this.modal_type='';
       var Index = this.category.findIndex((x:any) => x._id == this.id_for_approve)
-      this.category[Index].show_book= this.show_bk_for_rejection == 'Y' ? 'N' : 'Y';
+      this.category[Index].show_book= 'Y';
       this.dataSource =new MatTableDataSource(this.category);
       this.toastr.successToastr('Success','Book approved!')
       // this.fetch_data();
@@ -108,7 +108,7 @@ export class PublisherbooksComponent implements OnInit {
     $('#id01').fadeIn('slow');
   }
   reject(reject_msg:any){
-    console.log(this.modal_type);  
+    console.log(this.show_bk_for_rejection);  
       this.show_checkmark=true;
       this.rejbook.rejectbooks(this.id_for_rejection, this.show_bk_for_rejection,reject_msg).subscribe(data=>{
         // this.userdata1=data;
@@ -123,8 +123,10 @@ export class PublisherbooksComponent implements OnInit {
         $('#id01').fadeOut('slow');
         this.modal_type='';
         var Index = this.category.findIndex((x:any) => x._id == this.id_for_rejection)
-        this.category[Index].show_book= this.show_bk_for_rejection == 'Y' ? 'N' : 'Y';
+        this.category[Index].show_book= 'N';
+         console.log(this.category)
         this.dataSource =new MatTableDataSource(this.category);
+         console.log(this.dataSource.data)
         this.toastr.successToastr('Success','Book rejected!');
         // this.fetch_data();
       },
